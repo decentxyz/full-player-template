@@ -4,10 +4,10 @@ import { useFormContext } from "react-hook-form";
 const AudioUpload = ({ audioFile, setAudioFile, formRegisterName }: any) => {
   const { register } = useFormContext();
 
-  const updateAudioFile = (e:any) => {
+  const updateAudioFile = (e: any) => {
     setAudioFile({
       preview: "/icons/success.png",
-      raw: e.target.files[0],
+      raw: [...e.target.files],
     });
   };
 
@@ -19,9 +19,10 @@ const AudioUpload = ({ audioFile, setAudioFile, formRegisterName }: any) => {
         {...register(formRegisterName, {
           onChange: updateAudioFile,
         })}
+        multiple
       />
       <div className="relative cursor-pointer w-full flex items-center justify-center border border-gray-400 border-dashed rounded-md mt-6 gap-3 p-2">
-        <p style={{ left:17, top:9 }}>
+        <p style={{ left: 17, top: 9 }}>
           <Image
             title=""
             width={68}
@@ -31,7 +32,7 @@ const AudioUpload = ({ audioFile, setAudioFile, formRegisterName }: any) => {
           />
         </p>
         <div>
-          <p className="upload-header">Upload Audio (Optional)</p>
+          <p className="upload-header">Upload Audio Track(s)</p>
           <p className="upload-subtext">mp3 or .wav</p>
         </div>
       </div>

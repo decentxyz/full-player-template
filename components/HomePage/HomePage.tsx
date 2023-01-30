@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import styles from "../../styles/Home.module.css";
 import { useState } from "react";
 import LaunchPage from "../LaunchPage";
-import DashboardPage from "../DashboardPage/DashboardPage";
+import PlayerCreatePage from "../PlayerCreatePage";
 
 const Home: NextPage = () => {
   const [entered, setEntered] = useState(false);
@@ -10,7 +10,7 @@ const Home: NextPage = () => {
   return (
     <div className={`${styles.container} background`}>
       {entered ? (
-        <DashboardPage />
+        <PlayerCreatePage />
       ) : (
         <LaunchPage onClick={() => setEntered(true)} />
       )}

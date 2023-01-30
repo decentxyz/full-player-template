@@ -6,7 +6,7 @@ const LaunchPage = (props: any) => {
   return (
     <div className="h-screen flex flex-col items-center justify-center gap-3">
       <Image src="/images/decent.png" height="100" width="150" alt="logo" />
-      <div className="text-white">Dashboard x Decent</div>
+      <div className="text-white">Warp Sound x Decent</div>
       <button
         type="button"
         onClick={onClick}
