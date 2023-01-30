@@ -1,45 +1,27 @@
-import { DecentSDK, edition } from "@decent.xyz/sdk";
 import { useNetwork, useSigner } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import styles from "../../styles/Home.module.css";
 import { useState } from "react";
-import { ethers } from "ethers";
 
 const CreatePlayerButton = (props: any) => {
-  const { recipientString, contractAddress } = props;
+  const { contractAddress } = props;
   const { data: signer } = useSigner();
   const { chain } = useNetwork();
   const { openConnectModal } = useConnectModal();
   const [loading, setLoading] = useState(false);
-
-  const getRecipientArray = () => {
-    // remove whitespace
-    let airdropList = recipientString.replace(/\r?\n|\r/g, "");
-    // remove extraneous commas
-    airdropList = airdropList.replace(/(^,)|(,$)/g, "");
-    // convert to array
-    const newAirdropList = airdropList.split(",");
-
-    for (let i = 0; i < newAirdropList.length; i++) {
-      if (!ethers.utils.isAddress(newAirdropList[i])) {
-        return false;
-      }
-    }
-    return newAirdropList;
-  };
 
   const onClick = async () => {
     if (!chain || !signer) {
       openConnectModal?.();
       return;
     }
-    const recipients = getRecipientArray();
+    const recipients = [contractAddress];
     setLoading(true);
     try {
-      const sdk = new DecentSDK(chain.id, signer);
-      const contract = await edition.getContract(sdk, contractAddress);
-      const tx = await contract.mintAirdrop(recipients);
-      await tx.wait();
+      console.log(
+        "TODO: USE DECENT SDK TO CREATE IPFS METADATA IN PLAYLIST JSON FORMAT"
+      );
+      console.log("TODO: TOAST / REDIRECT to PLAYER? SHARE ON LENS BUTTON");
     } catch (err) {
       console.error(err);
     }
