@@ -1,6 +1,6 @@
-# dashboard starter kit
+# full player starter kit
 
-The purpose of this repository is to get you up & running quickly with the Decent SDK (@decent.xyz/sdk) for Dashboards.
+The purpose of this repository is to get you up & running quickly with the Decent SDK (@decent.xyz/sdk) for Full Music Player Apps (such as [WarpSound](https://warpsound.gitbook.io/nft-music-player-template/nft-music-player-template/what-is-the-nft-music-player-template)).
 
 ## Getting Started
 
@@ -15,10 +15,6 @@ Then, run the development server:
 ```bash
 npm run dev
 ```
-
-make sure you set up the ENV variables:
-
-- GITHUB_PERSONAL_ACCESS_TOKEN - used to get Active Developers from Github.
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
