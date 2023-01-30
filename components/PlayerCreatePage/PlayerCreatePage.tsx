@@ -5,36 +5,12 @@ import styles from "../../styles/Home.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import SeoHead from "../SeoHead";
-import { useEffect, useState } from "react";
 import ImageUpload from "../MediaUpload/ImageUpload";
 import AudioUpload from "../MediaUpload/AudioUpload";
 import CreatePlayerButton from "../CreatePlayerButton";
 
 const PlayerCreatePage: NextPage = () => {
-  const DEFAULT = "Dashboard Starter Kit";
-  const [title, setTitle] = useState(DEFAULT);
-  const [audio, setAudio] = useState("" as any);
   const methods = useForm();
-
-  useEffect(() => {
-    setAudio(
-      new Audio(
-        "https://nftstorage.link/ipfs/bafybeicpllju7qdpzyjsxm7czwn7wimx2fkq7hfcykf7noumefqgvterrm?id=1"
-      )
-    );
-  }, []);
-
-  const toggle = (newTitle: string) => {
-    if (!audio) return;
-
-    if (title === DEFAULT) {
-      setTitle(newTitle);
-      audio.play();
-    } else {
-      setTitle(DEFAULT);
-      audio.pause();
-    }
-  };
 
   return (
     <FormProvider {...methods}>
