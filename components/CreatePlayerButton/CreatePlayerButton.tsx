@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import { NFTStorage } from "nft.storage";
 import { ipfs } from "@decent.xyz/sdk";
 import getIpfsLink from "../../lib/getIpfsLink";
-import axios from "axios";
 
 const CreatePlayerButton = ({
   coverArt,
@@ -29,14 +28,9 @@ const CreatePlayerButton = ({
       const client = new NFTStorage({
         token: String(process.env.NEXT_PUBLIC_NFT_STORAGE_TOKEN),
       });
-
-      console.log("tracks");
-
-      console.log("tracks", tracks);
       const trackNames = tracks.raw.map((track: any) => {
         return track.name;
       });
-      console.log("trackNames", trackNames);
 
       const contentUris = (await ipfs.createMetadata({
         name: "metadata",
@@ -44,7 +38,6 @@ const CreatePlayerButton = ({
         image: coverArt.raw,
         tracks: tracks.raw,
       })) as any;
-      console.log("contentUris", contentUris);
       const trackItems = contentUris.data.tracks.map(function (
         item: any,
         index: number
@@ -56,10 +49,8 @@ const CreatePlayerButton = ({
           title: trackNames[index],
         };
       });
-      console.log("trackItems", trackItems);
 
       const coverArtUrl = getIpfsLink(contentUris.data.image.href);
-      console.log("image", coverArtUrl);
 
       const jsonString = JSON.stringify({
         schemaVersion: "1",
@@ -81,11 +72,7 @@ const CreatePlayerButton = ({
 
       const ipfsResponse = (await client.storeBlob(blob)) as any;
 
-      console.log("ipfsResponse", ipfsResponse);
       if (ipfsResponse?.error) throw ipfsResponse?.error;
-      console.log(
-        "TODO: DECENT SDK TO CREATE IPFS METADATA IN PLAYLIST JSON FORMAT"
-      );
 
       const baseAnimationUrl =
         "https://cdn.warpsound.ai/ipfs/QmVYW5vHaV322Kvp2So5ErngP1PrDUneYqo4e9TNygAGSn?playlist-url=";
@@ -100,8 +87,6 @@ const CreatePlayerButton = ({
         </a>,
         { autoClose: false }
       );
-
-      console.log("TODO: TOAST / REDIRECT to PLAYER? SHARE ON LENS BUTTON");
     } catch (err) {
       console.error(err);
     }
