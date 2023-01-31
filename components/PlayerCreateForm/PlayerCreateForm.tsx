@@ -10,6 +10,8 @@ import ImageUpload from "../MediaUpload/ImageUpload";
 const PlayerCreateForm = () => {
   const [nftImage, setNftImage] = useState();
   const [audioTracks, setAudioTracks] = useState();
+  const [artist, setArtist] = useState("");
+  const [projectTitle, setProjectTitle] = useState("");
 
   return (
     <main className={`${styles.main} flex gap-5`}>
@@ -36,7 +38,7 @@ const PlayerCreateForm = () => {
           <input
             className={`input-text text-black rounded-full p-4`}
             placeholder="XANDYLAND"
-            onChange={console.log}
+            onChange={(e) => setProjectTitle(e.target.value)}
           />
         </div>
         <div className="flex flex-col items-center">
@@ -45,7 +47,7 @@ const PlayerCreateForm = () => {
           <input
             className={`input-text text-black rounded-full p-4`}
             placeholder="X&ND"
-            onChange={console.log}
+            onChange={(e) => setArtist(e.target.value)}
           />
         </div>
       </div>
@@ -61,7 +63,12 @@ const PlayerCreateForm = () => {
         />
       </div>
 
-      <CreatePlayerButton coverArt={nftImage} tracks={audioTracks} />
+      <CreatePlayerButton
+        coverArt={nftImage}
+        tracks={audioTracks}
+        projectTitle={projectTitle}
+        artist={artist}
+      />
     </main>
   );
 };

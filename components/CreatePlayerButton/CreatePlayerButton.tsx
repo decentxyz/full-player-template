@@ -7,7 +7,12 @@ import { NFTStorage } from "nft.storage";
 import { ipfs } from "@decent.xyz/sdk";
 import getIpfsLink from "../../lib/getIpfsLink";
 
-const CreatePlayerButton = ({ coverArt, tracks }: any) => {
+const CreatePlayerButton = ({
+  coverArt,
+  tracks,
+  artist,
+  projectTitle,
+}: any) => {
   const { data: signer } = useSigner();
   const { chain } = useNetwork();
   const { openConnectModal } = useConnectModal();
@@ -40,7 +45,7 @@ const CreatePlayerButton = ({ coverArt, tracks }: any) => {
         return {
           url: getIpfsLink(item["href"]),
           kind: "audio",
-          artist: "TODO",
+          artist: artist,
           title: "TODO",
         };
       });
@@ -52,12 +57,12 @@ const CreatePlayerButton = ({ coverArt, tracks }: any) => {
       const jsonString = JSON.stringify({
         schemaVersion: "1",
         coverArtUrl: coverArtUrl,
-        title: "the record store_best of (2022)",
-        artist: "Nayomi",
+        title: projectTitle,
+        artist,
         chain: "Ethereum",
         contractAddress: "0xeacf3bc37a3bf1c1166a0d9a4df3f1679c26b52e",
         tokenId: "1",
-        tokenType: "ERC-1155",
+        tokenType: "ERC-721",
         hideBranding: true,
         items: trackItems,
       });
