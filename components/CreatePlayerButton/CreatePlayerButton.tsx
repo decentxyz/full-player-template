@@ -58,7 +58,7 @@ const CreatePlayerButton = ({ coverArt, tracks }: any) => {
         contractAddress: "0xeacf3bc37a3bf1c1166a0d9a4df3f1679c26b52e",
         tokenId: "1",
         tokenType: "ERC-1155",
-        hideBranding: false,
+        hideBranding: true,
         items: trackItems,
       });
 
