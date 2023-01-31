@@ -27,8 +27,7 @@ const CreatePlayerButton = ({
     setLoading(true);
     try {
       const client = new NFTStorage({
-        token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDU0NUY3MmE2RTE4ZTc1REZBMTA3Qjc3REIzNDM1NDNjOTQzMEI0RmQiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2Mjc1MDI4MjU5NiwibmFtZSI6IkRFQ0VOVCJ9.KaoP8CYmUESkkDo5XoCMEomfQBZiK7E_hpkMUX8uHFY",
+        token: String(process.env.NEXT_PUBLIC_NFT_STORAGE_TOKEN),
       });
 
       console.log("tracks");
