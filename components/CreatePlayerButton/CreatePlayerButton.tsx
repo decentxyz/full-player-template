@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { NFTStorage } from "nft.storage";
 import { ipfs } from "@decent.xyz/sdk";
 import getIpfsLink from "../../lib/getIpfsLink";
+import axios from "axios";
 
 const CreatePlayerButton = ({
   coverArt,
@@ -33,6 +34,10 @@ const CreatePlayerButton = ({
       console.log("tracks");
 
       console.log("tracks", tracks);
+      const trackNames = tracks.raw.map((track: any) => {
+        return track.name;
+      });
+      console.log("trackNames", trackNames);
 
       const contentUris = (await ipfs.createMetadata({
         name: "metadata",
@@ -41,12 +46,15 @@ const CreatePlayerButton = ({
         tracks: tracks.raw,
       })) as any;
       console.log("contentUris", contentUris);
-      const trackItems = contentUris.data.tracks.map(function (item: any) {
+      const trackItems = contentUris.data.tracks.map(function (
+        item: any,
+        index: number
+      ) {
         return {
           url: getIpfsLink(item["href"]),
           kind: "audio",
           artist: artist,
-          title: "TODO",
+          title: trackNames[index],
         };
       });
       console.log("trackItems", trackItems);
