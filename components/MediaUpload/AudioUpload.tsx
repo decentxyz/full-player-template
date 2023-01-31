@@ -1,9 +1,6 @@
 import Image from "next/image";
-import { useFormContext } from "react-hook-form";
 
-const AudioUpload = ({ audioFile, setAudioFile, formRegisterName }: any) => {
-  const { register } = useFormContext();
-
+const AudioUpload = ({ audioFile, setAudioFile }: any) => {
   const updateAudioFile = (e: any) => {
     setAudioFile({
       preview: "/icons/success.png",
@@ -16,9 +13,7 @@ const AudioUpload = ({ audioFile, setAudioFile, formRegisterName }: any) => {
       <input
         type="file"
         style={{ display: "none" }}
-        {...register(formRegisterName, {
-          onChange: updateAudioFile,
-        })}
+        onChange={updateAudioFile}
         multiple
       />
       <div className="relative cursor-pointer w-full flex items-center justify-center border border-gray-400 border-dashed rounded-md mt-6 gap-3 p-2">

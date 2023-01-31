@@ -7,8 +7,7 @@ import { NFTStorage } from "nft.storage";
 import { ipfs } from "@decent.xyz/sdk";
 import getIpfsLink from "../../lib/getIpfsLink";
 
-const CreatePlayerButton = (props: any) => {
-  const { coverArt } = props;
+const CreatePlayerButton = ({ coverArt, tracks }: any) => {
   const { data: signer } = useSigner();
   const { chain } = useNetwork();
   const { openConnectModal } = useConnectModal();
@@ -26,14 +25,27 @@ const CreatePlayerButton = (props: any) => {
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDU0NUY3MmE2RTE4ZTc1REZBMTA3Qjc3REIzNDM1NDNjOTQzMEI0RmQiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2Mjc1MDI4MjU5NiwibmFtZSI6IkRFQ0VOVCJ9.KaoP8CYmUESkkDo5XoCMEomfQBZiK7E_hpkMUX8uHFY",
       });
 
-      console.log("nftImage", coverArt);
+      console.log("tracks");
+
+      console.log("tracks", tracks);
 
       const contentUris = (await ipfs.createMetadata({
         name: "metadata",
         description: "desc",
         image: coverArt.raw,
+        tracks: tracks.raw,
       })) as any;
       console.log("contentUris", contentUris);
+      const trackItems = contentUris.data.tracks.map(function (item: any) {
+        return {
+          url: getIpfsLink(item["href"]),
+          kind: "audio",
+          artist: "TODO",
+          title: "TODO",
+        };
+      });
+      console.log("trackItems", trackItems);
+
       const coverArtUrl = getIpfsLink(contentUris.data.image.href);
       console.log("image", coverArtUrl);
 
@@ -47,26 +59,7 @@ const CreatePlayerButton = (props: any) => {
         tokenId: "1",
         tokenType: "ERC-1155",
         hideBranding: false,
-        items: [
-          {
-            kind: "audio",
-            title: "Lonely",
-            artist: "X&ND",
-            url: "https://maroon-quickest-ocelot-736.mypinata.cloud/ipfs/QmfQRWph2EGZi6CnLF3w2DWGt57FHRYxXKTBDVUiGFhJhy/LONELY_X_ND--online-audio-convert.com.mp3",
-          },
-          {
-            kind: "audio",
-            title: "Beg For It (Explicit)",
-            artist: "X&ND",
-            url: "https://maroon-quickest-ocelot-736.mypinata.cloud/ipfs/QmfQRWph2EGZi6CnLF3w2DWGt57FHRYxXKTBDVUiGFhJhy/BEG%20FOR%20IT%28EXPLICIT%29_X_ND--online-audio-convert.com.mp3",
-          },
-          {
-            kind: "audio",
-            title: "Can You Let Me In? (feat Melody Wagner)",
-            artist: "X&ND",
-            url: "https://maroon-quickest-ocelot-736.mypinata.cloud/ipfs/QmfQRWph2EGZi6CnLF3w2DWGt57FHRYxXKTBDVUiGFhJhy/CAN%20YOU%20LET%20ME%20IN_X_ND_Melodie%20Wagner--online-audio-convert.com.mp3",
-          },
-        ],
+        items: trackItems,
       });
 
       const bytes = new TextEncoder().encode(jsonString);

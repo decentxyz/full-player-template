@@ -9,6 +9,7 @@ import ImageUpload from "../MediaUpload/ImageUpload";
 
 const PlayerCreateForm = () => {
   const [nftImage, setNftImage] = useState();
+  const [audioTracks, setAudioTracks] = useState();
 
   return (
     <main className={`${styles.main} flex gap-5`}>
@@ -52,17 +53,15 @@ const PlayerCreateForm = () => {
         <ImageUpload
           nftImage={nftImage}
           setNftImage={setNftImage}
-          formRegisterName="nftImage"
           label="cover art"
         />
         <AudioUpload
           audioFile={{ preview: "/icons/audio-placeholder.png" }}
-          setAudioFile={console.log}
-          formRegisterName="audioFile"
+          setAudioFile={setAudioTracks}
         />
       </div>
 
-      <CreatePlayerButton coverArt={nftImage} />
+      <CreatePlayerButton coverArt={nftImage} tracks={audioTracks} />
     </main>
   );
 };

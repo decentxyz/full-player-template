@@ -35,7 +35,7 @@ const ImageUpload = ({
             title=""
             width={68}
             height={59.23}
-            src={nftImage.preview}
+            src={nftImage?.preview || "/icons/img-placeholder.png"}
             alt="nft image"
           />
         </p>
