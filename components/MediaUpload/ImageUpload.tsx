@@ -1,11 +1,19 @@
 import Image from "next/image";
 import { useFormContext } from "react-hook-form";
-import { ErrorMessage } from '@hookform/error-message';
+import { ErrorMessage } from "@hookform/error-message";
 
-const ImageUpload = ({ nftImage, setNftImage, formRegisterName, label }: any) => {
-  const { register, formState: { errors } } = useFormContext();
+const ImageUpload = ({
+  nftImage,
+  setNftImage,
+  formRegisterName,
+  label,
+}: any) => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
 
-  const updateNftImage = (e:any) => {
+  const updateNftImage = (e: any) => {
     if (e.target.files.length) {
       setNftImage({
         preview: URL.createObjectURL(e.target.files[0]),
@@ -19,16 +27,10 @@ const ImageUpload = ({ nftImage, setNftImage, formRegisterName, label }: any) =>
       <input
         type="file"
         style={{ display: "none" }}
-        {...register(formRegisterName, {
-          onChange: updateNftImage,
-          required: "Upload your NFT art.",
-          validate: () => {
-            return nftImage?.raw?.type != "";
-          }
-        })}
+        onChange={updateNftImage}
       />
       <div className="relative cursor-pointer w-full flex items-center justify-center border border-gray-400 border-dashed rounded-md mt-6 gap-3 p-2">
-        <p style={{ left:17, top:9 }}>
+        <p style={{ left: 17, top: 9 }}>
           <Image
             title=""
             width={68}
@@ -42,7 +44,9 @@ const ImageUpload = ({ nftImage, setNftImage, formRegisterName, label }: any) =>
           <p className="upload-subtext">Image, video, pdfs, 3D {"&"} html</p>
         </div>
       </div>
-      <p className="error-text"><ErrorMessage errors={errors} name={formRegisterName} /></p>
+      <p className="error-text">
+        <ErrorMessage errors={errors} name={formRegisterName} />
+      </p>
     </label>
   );
 };

@@ -3,11 +3,12 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import styles from "../../styles/Home.module.css";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { ipfs } from "@decent.xyz/sdk";
 import { NFTStorage } from "nft.storage";
+import { ipfs } from "@decent.xyz/sdk";
+import getIpfsLink from "../../lib/getIpfsLink";
 
 const CreatePlayerButton = (props: any) => {
-  const { contractAddress } = props;
+  const { coverArt } = props;
   const { data: signer } = useSigner();
   const { chain } = useNetwork();
   const { openConnectModal } = useConnectModal();
@@ -18,22 +19,27 @@ const CreatePlayerButton = (props: any) => {
       openConnectModal?.();
       return;
     }
-    const recipients = [contractAddress];
     setLoading(true);
     try {
-      const file = new File(["foo"], "foo.png", {
-        type: "image/png",
-      });
-
       const client = new NFTStorage({
         token:
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDU0NUY3MmE2RTE4ZTc1REZBMTA3Qjc3REIzNDM1NDNjOTQzMEI0RmQiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2Mjc1MDI4MjU5NiwibmFtZSI6IkRFQ0VOVCJ9.KaoP8CYmUESkkDo5XoCMEomfQBZiK7E_hpkMUX8uHFY",
       });
 
+      console.log("nftImage", coverArt);
+
+      const contentUris = (await ipfs.createMetadata({
+        name: "metadata",
+        description: "desc",
+        image: coverArt.raw,
+      })) as any;
+      console.log("contentUris", contentUris);
+      const coverArtUrl = getIpfsLink(contentUris.data.image.href);
+      console.log("image", coverArtUrl);
+
       const jsonString = JSON.stringify({
         schemaVersion: "1",
-        coverArtUrl:
-          "https://cdn.warpsound.ai/ipfs/QmVzZenmmA1zm47dsto7gqmxSZPMNZF6hqy3Jesmb24UDQ/WS-Nayomi-Album-BestOf2022-FINAL.webp",
+        coverArtUrl: coverArtUrl,
         title: "the record store_best of (2022)",
         artist: "Nayomi",
         chain: "Ethereum",
