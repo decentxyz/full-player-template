@@ -2,6 +2,9 @@
 
 The purpose of this repository is to get you up & running quickly with the Decent SDK (@decent.xyz/sdk) for Full Music Player Apps (such as [WarpSound](https://warpsound.gitbook.io/nft-music-player-template/nft-music-player-template/what-is-the-nft-music-player-template)).
 
+## Full Album Player - by [WarpSound](https://warpsound.gitbook.io/nft-music-player-template/nft-music-player-template/what-is-the-nft-music-player-template)
+![FULL_ALBUM](https://user-images.githubusercontent.com/23249402/215785742-277b4a80-c264-4e65-af8e-7e2e9ec6d72c.gif)
+
 ## Getting Started
 
 First, install dependencies using npm (note: `yarn add` has reported mixed results):
