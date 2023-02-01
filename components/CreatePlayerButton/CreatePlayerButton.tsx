@@ -11,11 +11,13 @@ const CreatePlayerButton = ({
   artist,
   projectTitle,
   setMetadata,
+  setDeploymentStep,
 }: any) => {
   const [loading, setLoading] = useState(false);
 
   const onClick = async () => {
     setLoading(true);
+    setDeploymentStep(1);
     try {
       const client = new NFTStorage({
         token: String(process.env.NEXT_PUBLIC_NFT_STORAGE_TOKEN),
@@ -30,6 +32,8 @@ const CreatePlayerButton = ({
         image: coverArt.raw,
         tracks: tracks.raw,
       })) as any;
+      setDeploymentStep(2);
+
       const trackItems = contentUris.data.tracks.map(function (
         item: any,
         index: number
@@ -62,6 +66,8 @@ const CreatePlayerButton = ({
         type: "application/json;charset=utf-8",
       });
 
+      setDeploymentStep(3);
+
       const ipfsResponse = (await client.storeBlob(blob)) as any;
 
       if (ipfsResponse?.error) throw ipfsResponse?.error;
@@ -79,6 +85,8 @@ const CreatePlayerButton = ({
         </a>,
         { autoClose: false }
       );
+      setDeploymentStep(0);
+
       setMetadata({
         animation_url: baseAnimationUrl + playlistUrl,
         artist,
@@ -89,6 +97,8 @@ const CreatePlayerButton = ({
     } catch (err) {
       console.error(err);
     }
+    setDeploymentStep(0);
+
     setLoading(false);
   };
 

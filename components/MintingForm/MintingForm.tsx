@@ -9,7 +9,7 @@ import AudioUpload from "../MediaUpload/AudioUpload";
 import ImageUpload from "../MediaUpload/ImageUpload";
 import MintButton from "../MintButton";
 
-const MintingForm = ({ metadata }: any) => {
+const MintingForm = ({ metadata, setDeploymentStep }: any) => {
   const [htmlPlayer, setHtmlPlayer] = useState("");
   console.log("metadata", metadata);
   console.log(metadata.animation_url);
@@ -55,7 +55,7 @@ const MintingForm = ({ metadata }: any) => {
         />
       )}
 
-      <MintButton metadata={metadata} />
+      <MintButton metadata={metadata} setDeploymentStep={setDeploymentStep} />
     </main>
   );
 };
