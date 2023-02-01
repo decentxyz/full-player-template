@@ -1,5 +1,3 @@
-import { useNetwork, useSigner } from "wagmi";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import styles from "../../styles/Home.module.css";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -14,16 +12,9 @@ const CreatePlayerButton = ({
   projectTitle,
   setMetadata,
 }: any) => {
-  const { data: signer } = useSigner();
-  const { chain } = useNetwork();
-  const { openConnectModal } = useConnectModal();
   const [loading, setLoading] = useState(false);
 
   const onClick = async () => {
-    if (!chain || !signer) {
-      openConnectModal?.();
-      return;
-    }
     setLoading(true);
     try {
       const client = new NFTStorage({
