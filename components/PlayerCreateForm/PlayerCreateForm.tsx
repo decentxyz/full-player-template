@@ -13,6 +13,7 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
   const [artist, setArtist] = useState("");
   const [projectTitle, setProjectTitle] = useState("");
 
+  console.log("adioTracks", audioTracks);
   return (
     <main className={`${styles.main} flex gap-5`}>
       <div className="flex items-center gap-4">
@@ -58,8 +59,14 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
           label="cover art"
         />
         <AudioUpload
-          audioFile={{ preview: "/icons/audio-placeholder.png" }}
+          audioFile={{
+            preview: audioTracks
+              ? "/icons/success.png"
+              : "/icons/audio-placeholder.png",
+          }}
           setAudioFile={setAudioTracks}
+          header={audioTracks && `${audioTracks["raw"]["length"]} track(s)`}
+          subtext={audioTracks && " "}
         />
       </div>
 

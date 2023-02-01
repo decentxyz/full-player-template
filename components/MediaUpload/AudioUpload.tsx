@@ -1,6 +1,11 @@
 import Image from "next/image";
 
-const AudioUpload = ({ audioFile, setAudioFile }: any) => {
+const AudioUpload = ({
+  audioFile,
+  setAudioFile,
+  header = "Upload Audio Track(s)",
+  subtext = "mp3 or .wav",
+}: any) => {
   const updateAudioFile = (e: any) => {
     setAudioFile({
       preview: "/icons/success.png",
@@ -27,8 +32,8 @@ const AudioUpload = ({ audioFile, setAudioFile }: any) => {
           />
         </p>
         <div>
-          <p className="upload-header">Upload Audio Track(s)</p>
-          <p className="upload-subtext">mp3 or .wav</p>
+          <p className="upload-header">{header}</p>
+          <p className="upload-subtext">{subtext}</p>
         </div>
       </div>
     </label>
