@@ -7,7 +7,7 @@ import CreatePlayerButton from "../CreatePlayerButton";
 import AudioUpload from "../MediaUpload/AudioUpload";
 import ImageUpload from "../MediaUpload/ImageUpload";
 
-const PlayerCreateForm = () => {
+const PlayerCreateForm = ({ setMetadata }: any) => {
   const [nftImage, setNftImage] = useState();
   const [audioTracks, setAudioTracks] = useState();
   const [artist, setArtist] = useState("");
@@ -68,6 +68,7 @@ const PlayerCreateForm = () => {
         tracks={audioTracks}
         projectTitle={projectTitle}
         artist={artist}
+        setMetadata={setMetadata}
       />
     </main>
   );

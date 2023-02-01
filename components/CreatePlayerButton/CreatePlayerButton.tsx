@@ -12,6 +12,7 @@ const CreatePlayerButton = ({
   tracks,
   artist,
   projectTitle,
+  setMetadata,
 }: any) => {
   const { data: signer } = useSigner();
   const { chain } = useNetwork();
@@ -57,9 +58,9 @@ const CreatePlayerButton = ({
         coverArtUrl: coverArtUrl,
         title: projectTitle,
         artist,
-        chain: "Ethereum",
-        contractAddress: "0xeacf3bc37a3bf1c1166a0d9a4df3f1679c26b52e",
-        tokenId: "1",
+        chain: "",
+        contractAddress: "",
+        tokenId: "",
         tokenType: "ERC-721",
         hideBranding: true,
         items: trackItems,
@@ -87,6 +88,13 @@ const CreatePlayerButton = ({
         </a>,
         { autoClose: false }
       );
+      setMetadata({
+        animation_url: baseAnimationUrl + playlistUrl,
+        artist,
+        name: projectTitle,
+        description: "",
+        image: coverArt.raw,
+      });
     } catch (err) {
       console.error(err);
     }

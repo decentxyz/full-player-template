@@ -1,18 +1,6 @@
 import Image from "next/image";
-import { useFormContext } from "react-hook-form";
-import { ErrorMessage } from "@hookform/error-message";
 
-const ImageUpload = ({
-  nftImage,
-  setNftImage,
-  formRegisterName,
-  label,
-}: any) => {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
-
+const ImageUpload = ({ nftImage, setNftImage, label }: any) => {
   const updateNftImage = (e: any) => {
     if (e.target.files.length) {
       setNftImage({
@@ -44,9 +32,6 @@ const ImageUpload = ({
           <p className="upload-subtext">Image, video, pdfs, 3D {"&"} html</p>
         </div>
       </div>
-      <p className="error-text">
-        <ErrorMessage errors={errors} name={formRegisterName} />
-      </p>
     </label>
   );
 };
