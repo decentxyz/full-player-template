@@ -1,21 +1,46 @@
 import type { NextPage } from "next";
-import { useForm, FormProvider } from "react-hook-form";
 import styles from "../../styles/Home.module.css";
 import SeoHead from "../SeoHead";
 import PlayerCreateForm from "../PlayerCreateForm";
+import TxScreen from "../TxScreen";
 import Footer from "../Footer";
+import { useState } from "react";
+import MintingForm from "../MintingForm";
+import { useNetwork } from "wagmi";
 
 const PlayerCreatePage: NextPage = () => {
-  const methods = useForm();
+  const [metadata, setMetadata] = useState();
+  const [deploymentStep, setDeploymentStep] = useState(0);
+  const { chain } = useNetwork();
 
   return (
-    <FormProvider {...methods}>
-      <div className={`${styles.container} background`}>
-        <SeoHead />
-        <PlayerCreateForm />
-        <Footer />
-      </div>
-    </FormProvider>
+    <div className={`${styles.container} background`}>
+      <SeoHead />
+      {deploymentStep > 0 ? (
+        <TxScreen
+          step={deploymentStep}
+          chainName={chain?.name}
+          titleText={metadata ? "Deploying" : "Creating Player"}
+          hideUpload={false}
+        />
+      ) : (
+        <>
+          {metadata ? (
+            <MintingForm
+              metadata={metadata}
+              setDeploymentStep={setDeploymentStep}
+            />
+          ) : (
+            <PlayerCreateForm
+              setMetadata={setMetadata}
+              setDeploymentStep={setDeploymentStep}
+            />
+          )}
+        </>
+      )}
+
+      <Footer />
+    </div>
   );
 };
 

@@ -1,0 +1,77 @@
+.load-container {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background-color: #222225;
+    background-image:
+        radial-gradient(farthest-side at -20% 50%, rgba(115, 15, 230, 0.7) 0, transparent 50%),
+        radial-gradient(farthest-corner at 120% 120%, rgba(115, 15, 230, 0.7) 0, transparent 40%);
+}
+
+.front-banner {
+    color: white;
+    font-weight: 600;
+    font-size: 80px;
+    line-height: 100px;
+    white-space: nowrap;
+    width: fit-content;
+
+    display: flex;
+    flex-flow: row nowrap;
+    animation: marquee-front 36s linear infinite;
+
+    position: absolute;
+    transform-origin: top left;
+    top: 60%;
+    transform: rotate(-15deg) translate(-10%, 0);
+}
+
+@keyframes marquee-front {
+    to {
+        transform: rotate(-15deg) translate(-35%, 0);
+    }
+}
+
+.block-a,
+.block-b {
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.block-a {
+    padding: 0 20px;
+    background-color: #730FE6;
+}
+
+.block-b {
+    padding: 0 20px;
+    background-color: black;
+}
+
+.back-banner {
+    color: white;
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 56px;
+    white-space: nowrap;
+    opacity: 0.15;
+
+    display: flex;
+    flex-flow: row nowrap;
+    width: fit-content;
+    animation: marquee-back 30s linear infinite;
+
+    position: absolute;
+    top: 30%;
+    transform-origin: top left;
+    transform: rotate(12deg) translate(-25%, 0);
+}
+
+@keyframes marquee-back {
+    to {
+        transform: rotate(12deg) translate(0, 0);
+    }
+}

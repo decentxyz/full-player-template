@@ -1,5 +1,3 @@
-import { useNetwork, useSigner } from "wagmi";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import styles from "../../styles/Home.module.css";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -12,18 +10,14 @@ const CreatePlayerButton = ({
   tracks,
   artist,
   projectTitle,
+  setMetadata,
+  setDeploymentStep,
 }: any) => {
-  const { data: signer } = useSigner();
-  const { chain } = useNetwork();
-  const { openConnectModal } = useConnectModal();
   const [loading, setLoading] = useState(false);
 
   const onClick = async () => {
-    if (!chain || !signer) {
-      openConnectModal?.();
-      return;
-    }
     setLoading(true);
+    setDeploymentStep(1);
     try {
       const client = new NFTStorage({
         token: String(process.env.NEXT_PUBLIC_NFT_STORAGE_TOKEN),
@@ -38,6 +32,8 @@ const CreatePlayerButton = ({
         image: coverArt.raw,
         tracks: tracks.raw,
       })) as any;
+      setDeploymentStep(2);
+
       const trackItems = contentUris.data.tracks.map(function (
         item: any,
         index: number
@@ -57,9 +53,9 @@ const CreatePlayerButton = ({
         coverArtUrl: coverArtUrl,
         title: projectTitle,
         artist,
-        chain: "Ethereum",
-        contractAddress: "0xeacf3bc37a3bf1c1166a0d9a4df3f1679c26b52e",
-        tokenId: "1",
+        chain: "",
+        contractAddress: "",
+        tokenId: "",
         tokenType: "ERC-721",
         hideBranding: true,
         items: trackItems,
@@ -69,6 +65,8 @@ const CreatePlayerButton = ({
       const blob = new Blob([bytes], {
         type: "application/json;charset=utf-8",
       });
+
+      setDeploymentStep(3);
 
       const ipfsResponse = (await client.storeBlob(blob)) as any;
 
@@ -87,9 +85,20 @@ const CreatePlayerButton = ({
         </a>,
         { autoClose: false }
       );
+      setDeploymentStep(0);
+
+      setMetadata({
+        animation_url: baseAnimationUrl + playlistUrl,
+        artist,
+        name: projectTitle,
+        description: "",
+        image: coverArt.raw,
+      });
     } catch (err) {
       console.error(err);
     }
+    setDeploymentStep(0);
+
     setLoading(false);
   };
 
