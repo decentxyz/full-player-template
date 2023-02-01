@@ -13,7 +13,6 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
   const [artist, setArtist] = useState("");
   const [projectTitle, setProjectTitle] = useState("");
 
-  console.log("adioTracks", audioTracks);
   return (
     <main className={`${styles.main} flex gap-5`}>
       <div className="flex items-center gap-4">
