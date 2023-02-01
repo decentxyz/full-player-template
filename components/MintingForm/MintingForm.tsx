@@ -1,30 +1,10 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import styles from "../../styles/Home.module.css";
-import CreatePlayerButton from "../CreatePlayerButton";
-import AudioUpload from "../MediaUpload/AudioUpload";
-import ImageUpload from "../MediaUpload/ImageUpload";
 import MintButton from "../MintButton";
 
 const MintingForm = ({ metadata, setDeploymentStep }: any) => {
-  const [htmlPlayer, setHtmlPlayer] = useState("");
-  console.log("metadata", metadata);
-  console.log(metadata.animation_url);
-
-  useEffect(() => {
-    const init = async () => {
-      const response = await axios.get(metadata.animation_url);
-      // const text = await response.text();
-      console.log("data", response);
-      setHtmlPlayer(response.data);
-    };
-
-    if (!metadata.animation_url) return;
-    init();
-  }, [metadata]);
   return (
     <main className={`${styles.main} flex gap-5`}>
       <div className="flex items-center gap-4">
@@ -46,7 +26,7 @@ const MintingForm = ({ metadata, setDeploymentStep }: any) => {
       <h1 className={`${styles.title} font-medium`}>
         ⬇️ mint your player onchain ⬇️
       </h1>
-      {htmlPlayer && (
+      {metadata?.animation_url && (
         <iframe
           title="HTML in an iframe"
           height={500}

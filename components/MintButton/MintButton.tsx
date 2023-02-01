@@ -39,10 +39,7 @@ const MintButton = ({ metadata, setDeploymentStep }: any) => {
     setDeploymentStep(1);
     try {
       const sdk = new DecentSDK(chain.id, signer);
-      console.log("sdk", sdk);
-      console.log("metadata", metadata);
       const response = (await ipfs.createMetadata(metadata)) as any;
-      console.log("IPFS", response);
       setDeploymentStep(2);
       const contract = await edition.deploy(
         sdk,
@@ -66,7 +63,6 @@ const MintButton = ({ metadata, setDeploymentStep }: any) => {
         () => setDeploymentStep(2),
         undefined
       );
-      console.log("contract", contract);
       const tx = await contract.mint(1);
       setDeploymentStep(3);
       await tx.wait();
