@@ -58,8 +58,14 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
           label="cover art"
         />
         <AudioUpload
-          audioFile={{ preview: "/icons/audio-placeholder.png" }}
+          audioFile={{
+            preview: audioTracks
+              ? "/icons/success.png"
+              : "/icons/audio-placeholder.png",
+          }}
           setAudioFile={setAudioTracks}
+          header={audioTracks && `${audioTracks["raw"]["length"]} track(s)`}
+          subtext={audioTracks && " "}
         />
       </div>
 
