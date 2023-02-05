@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { DeployBackground } from "../DeployingContract/DeployBackground";
-import ProgressModal from "../ProgressModal";
+import ProgressModal, { PlayerDeployProgressModal } from "../ProgressModal";
 
 const TxScreen = ({ step, chainName, titleText, hideUpload }) => {
+  console.log("TITLE TEXT", titleText);
   return (
     <div className="absolute inset-0">
       <DeployBackground text={titleText} />
@@ -19,7 +20,15 @@ const TxScreen = ({ step, chainName, titleText, hideUpload }) => {
         <h3 className="border-b border-white py-2 text-white">{titleText}</h3>
       </div>
 
-      <ProgressModal step={step} chain={chainName} hideUpload={hideUpload} />
+      {titleText.includes("Creating") ? (
+        <ProgressModal step={step} chain={chainName} hideUpload={hideUpload} />
+      ) : (
+        <PlayerDeployProgressModal
+          step={step}
+          chain={chainName}
+          hideUpload={hideUpload}
+        />
+      )}
     </div>
   );
 };

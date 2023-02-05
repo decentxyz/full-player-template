@@ -62,11 +62,11 @@ const MintButton = ({ metadata, setDeploymentStep }: any) => {
         null,
         null,
         () => setDeploymentStep(3),
-        () => setDeploymentStep(2),
+        () => setDeploymentStep(4),
         undefined
       );
       const tx = await contract.mint(1);
-      setDeploymentStep(3);
+      setDeploymentStep(5);
       await tx.wait();
       setDeploymentStep(0);
       toast.success(
