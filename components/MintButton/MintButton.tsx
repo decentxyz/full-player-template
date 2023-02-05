@@ -7,12 +7,14 @@ import { NFTStorage } from "nft.storage";
 import { DecentSDK, edition, ipfs } from "@decent.xyz/sdk";
 import getIpfsLink from "../../lib/getIpfsLink";
 import { BigNumber } from "ethers";
+import { useRouter } from "next/router";
 
 const MintButton = ({ metadata, setDeploymentStep }: any) => {
   const { data: signer } = useSigner();
   const { chain } = useNetwork();
   const { openConnectModal } = useConnectModal();
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const isTestnet = () => {
     return chain?.id === 80001 || chain?.id === 5 || chain?.id === 420;
@@ -77,6 +79,10 @@ const MintButton = ({ metadata, setDeploymentStep }: any) => {
         >
           view nft here
         </a>
+      );
+
+      router.push(
+        `https://hq.decent.xyz/${chain.id}/Editions/${contract.address}`
       );
     } catch (err) {
       console.error(err);
