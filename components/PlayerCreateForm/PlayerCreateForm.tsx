@@ -29,6 +29,7 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
   ) => {
     const newTrackArray = [...audioTracks];
     const newArtistArray = [...artists];
+    const newTrackNameArray = [...trackNames];
     const item1Index = trackNumber;
     const item2Index = isMoveEarlier ? trackNumber - 1 : trackNumber + 1;
 
@@ -42,8 +43,14 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
       newArtistArray[item1Index],
     ];
 
+    [newTrackNameArray[item1Index], newTrackNameArray[item2Index]] = [
+      newTrackNameArray[item2Index],
+      newTrackNameArray[item1Index],
+    ];
+
     setAudioTracks(newTrackArray);
     setArtists(newArtistArray);
+    setTrackNames(newTrackNameArray);
   };
 
   const handleArtistChange = (trackNumber: number, value: string) => {
