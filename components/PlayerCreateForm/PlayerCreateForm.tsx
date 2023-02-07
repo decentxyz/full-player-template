@@ -19,10 +19,6 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
   const updateTrackList = (newTracks: any) => {
     setAudioTracks(newTracks);
     setArtists(Array(newTracks.length).fill(artist) as any);
-    console.log(
-      "Array(length).fill(artist) as any",
-      Array(newTracks.length).fill(artist) as any
-    );
     const newTrackNames = newTracks.map((track: any) => track.name);
     setTrackNames(newTrackNames);
   };
@@ -46,19 +42,11 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
       newArtistArray[item1Index],
     ];
 
-    console.log("audioTracks", audioTracks);
-    console.log("newTrackArray", newTrackArray);
-
     setAudioTracks(newTrackArray);
     setArtists(newArtistArray);
-
-    console.log(audioTracks); // [1, 2, 3, 4]
-    console.log(newTrackArray); // [4, 2, 3, 1]
   };
 
   const handleArtistChange = (trackNumber: number, value: string) => {
-    console.log("trackNumber", trackNumber);
-    console.log("value", value);
     const newArtistNames: string[] = [...artists];
     newArtistNames[trackNumber] = value;
     setArtists(newArtistNames);
@@ -73,8 +61,6 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
   };
 
   const hasAudioTracks = audioTracks.length > 0;
-  console.log("audioTracks", audioTracks);
-  console.log("artists", artists);
 
   return (
     <main className={`${styles.main} flex gap-5`}>

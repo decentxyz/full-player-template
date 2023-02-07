@@ -24,7 +24,6 @@ const CreatePlayerButton = ({
         token: String(process.env.NEXT_PUBLIC_NFT_STORAGE_TOKEN),
       });
 
-      console.log("tracks", tracks);
       const contentUris = (await ipfs.createMetadata({
         name: "metadata",
         description: "desc",
@@ -32,7 +31,6 @@ const CreatePlayerButton = ({
         tracks: tracks,
       })) as any;
       setDeploymentStep(2);
-      console.log("contentUris", contentUris);
 
       const trackItems = contentUris.data.tracks.map(function (
         item: any,
