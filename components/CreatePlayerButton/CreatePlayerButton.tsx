@@ -1,6 +1,5 @@
 import styles from "../../styles/Home.module.css";
 import { useState } from "react";
-import { toast } from "react-toastify";
 import { NFTStorage } from "nft.storage";
 import { ipfs } from "@decent.xyz/sdk";
 import getIpfsLink from "../../lib/getIpfsLink";
@@ -8,7 +7,9 @@ import getIpfsLink from "../../lib/getIpfsLink";
 const CreatePlayerButton = ({
   coverArt,
   tracks,
+  trackNames,
   artist,
+  artistNames,
   projectTitle,
   setMetadata,
   setDeploymentStep,
@@ -22,17 +23,16 @@ const CreatePlayerButton = ({
       const client = new NFTStorage({
         token: String(process.env.NEXT_PUBLIC_NFT_STORAGE_TOKEN),
       });
-      const trackNames = tracks.raw.map((track: any) => {
-        return track.name;
-      });
 
+      console.log("tracks", tracks);
       const contentUris = (await ipfs.createMetadata({
         name: "metadata",
         description: "desc",
         image: coverArt.raw,
-        tracks: tracks.raw,
+        tracks: tracks,
       })) as any;
       setDeploymentStep(2);
+      console.log("contentUris", contentUris);
 
       const trackItems = contentUris.data.tracks.map(function (
         item: any,
@@ -41,7 +41,7 @@ const CreatePlayerButton = ({
         return {
           url: getIpfsLink(item["href"]),
           kind: "audio",
-          artist: artist,
+          artist: artistNames[index],
           title: trackNames[index],
         };
       });
@@ -75,16 +75,6 @@ const CreatePlayerButton = ({
       const baseAnimationUrl =
         "https://cdn.warpsound.ai/ipfs/QmVYW5vHaV322Kvp2So5ErngP1PrDUneYqo4e9TNygAGSn?playlist-url=";
       const playlistUrl = `https://nftstorage.link/ipfs/${ipfsResponse}`;
-      toast.success(
-        <a
-          target="_blank"
-          rel="noreferrer"
-          href={baseAnimationUrl + playlistUrl}
-        >
-          View your player here
-        </a>,
-        { autoClose: false }
-      );
       setDeploymentStep(0);
 
       setMetadata({

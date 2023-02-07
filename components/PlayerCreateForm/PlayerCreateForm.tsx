@@ -12,7 +12,7 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
   const [nftImage, setNftImage] = useState();
   const [audioTracks, setAudioTracks] = useState([]);
   const [trackNames, setTrackNames] = useState([] as string[]);
-  const [artists, setArtists] = useState([]);
+  const [artists, setArtists] = useState([] as string[]);
   const [artist, setArtist] = useState("");
   const [projectTitle, setProjectTitle] = useState("");
 
@@ -59,11 +59,13 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
   const handleArtistChange = (trackNumber: number, value: string) => {
     console.log("trackNumber", trackNumber);
     console.log("value", value);
+    const newArtistNames: string[] = [...artists];
+    newArtistNames[trackNumber] = value;
+    setArtists(newArtistNames);
+    return false;
   };
 
   const handleTrackChange = (trackNumber: number, value: string) => {
-    console.log("trackNumber", trackNumber);
-    console.log("change file name for", audioTracks[trackNumber]["name"]);
     const newTrackNames: string[] = [...trackNames];
     newTrackNames[trackNumber] = value;
     setTrackNames(newTrackNames);
@@ -141,8 +143,10 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
       <CreatePlayerButton
         coverArt={nftImage}
         tracks={audioTracks}
+        trackNames={trackNames}
         projectTitle={projectTitle}
         artist={artist}
+        artistNames={artists}
         setMetadata={setMetadata}
         setDeploymentStep={setDeploymentStep}
       />
