@@ -8,6 +8,7 @@ import { DecentSDK, edition, ipfs } from "@decent.xyz/sdk";
 import getIpfsLink from "../../lib/getIpfsLink";
 import { BigNumber } from "ethers";
 import { useRouter } from "next/router";
+import Button from "../Button";
 
 const MintButton = ({ metadata, setDeploymentStep }: any) => {
   const { data: signer } = useSigner();
@@ -92,13 +93,7 @@ const MintButton = ({ metadata, setDeploymentStep }: any) => {
   };
 
   return (
-    <button
-      onClick={onClick}
-      className={`${styles.card} disabled:opacity-75`}
-      disabled={loading}
-    >
-      <h2 className="font-medium">Mint Player &rarr;</h2>
-    </button>
+    <Button disabled={loading} onClick={onClick} text="Mint Player &rarr;" />
   );
 };
 

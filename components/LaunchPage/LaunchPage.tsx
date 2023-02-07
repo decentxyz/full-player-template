@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Button from "../Button";
 
 const LaunchPage = (props: any) => {
   const { onClick } = props;
@@ -7,13 +8,7 @@ const LaunchPage = (props: any) => {
     <div className="h-screen flex flex-col items-center justify-center gap-3">
       <Image src="/images/decent.png" height="100" width="150" alt="logo" />
       <div className="text-white">Warp Sound x Decent</div>
-      <button
-        type="button"
-        onClick={onClick}
-        className="bg-white text-[#3b1675] font-bold py-2 px-4 rounded-full hover:bg-[#3b1675] hover:text-white"
-      >
-        enter
-      </button>
+      <Button text="enter" onClick={onClick} />
     </div>
   );
 };
