@@ -2,9 +2,9 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import Draggable from "react-draggable";
 import styles from "../../styles/Home.module.css";
 import CreatePlayerButton from "../CreatePlayerButton";
+import Playlist from "../Playlist";
 import AudioUpload from "../MediaUpload/AudioUpload";
 import ImageUpload from "../MediaUpload/ImageUpload";
 
@@ -22,6 +22,32 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
       "Array(length).fill(artist) as any",
       Array(newTracks.length).fill(artist) as any
     );
+  };
+
+  const moveTrack = (trackNumber: number, isMoveEarlier: boolean) => {
+    const newTrackArray = [...audioTracks];
+    const newArtistArray = [...artists];
+    const item1Index = trackNumber;
+    const item2Index = isMoveEarlier ? trackNumber - 1 : trackNumber + 1;
+
+    [newTrackArray[item1Index], newTrackArray[item2Index]] = [
+      newTrackArray[item2Index],
+      newTrackArray[item1Index],
+    ];
+
+    [newArtistArray[item1Index], newArtistArray[item2Index]] = [
+      newArtistArray[item2Index],
+      newArtistArray[item1Index],
+    ];
+
+    console.log("audioTracks", audioTracks);
+    console.log("newTrackArray", newTrackArray);
+
+    setAudioTracks(newTrackArray);
+    setArtists(newArtistArray);
+
+    console.log(audioTracks); // [1, 2, 3, 4]
+    console.log(newTrackArray); // [4, 2, 3, 1]
   };
 
   const hasAudioTracks = audioTracks.length > 0;
@@ -84,22 +110,11 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
         />
       </div>
 
-      <div className="flex flex-col gap-3">
-        {audioTracks.map((track, index) => (
-          <Draggable key={track["name"] an any} onStart={console.log}>
-            <li onDrop={(e) => onDrop(e, index)}>
-              <input
-                className="text-black rounded-full p-5 w-[150px] sm:w-full"
-                value={artists[index]}
-              />
-              <input
-                className="text-black rounded-full p-5 w-[150px] sm:w-full"
-                value={track["name"]}
-              />
-            </li>
-          </Draggable>
-        ))}
-      </div>
+      <Playlist
+        audioTracks={audioTracks}
+        artists={artists}
+        handleTrackOrderChange={moveTrack}
+      />
 
       <CreatePlayerButton
         coverArt={nftImage}
