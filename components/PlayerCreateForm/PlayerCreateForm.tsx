@@ -11,6 +11,7 @@ import ImageUpload from "../MediaUpload/ImageUpload";
 const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
   const [nftImage, setNftImage] = useState();
   const [audioTracks, setAudioTracks] = useState([]);
+  const [trackNames, setTrackNames] = useState([] as string[]);
   const [artists, setArtists] = useState([]);
   const [artist, setArtist] = useState("");
   const [projectTitle, setProjectTitle] = useState("");
@@ -22,9 +23,14 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
       "Array(length).fill(artist) as any",
       Array(newTracks.length).fill(artist) as any
     );
+    const newTrackNames = newTracks.map((track: any) => track.name);
+    setTrackNames(newTrackNames);
   };
 
-  const moveTrack = (trackNumber: number, isMoveEarlier: boolean) => {
+  const handleTrackOrderChange = (
+    trackNumber: number,
+    isMoveEarlier: boolean
+  ) => {
     const newTrackArray = [...audioTracks];
     const newArtistArray = [...artists];
     const item1Index = trackNumber;
@@ -48,6 +54,20 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
 
     console.log(audioTracks); // [1, 2, 3, 4]
     console.log(newTrackArray); // [4, 2, 3, 1]
+  };
+
+  const handleArtistChange = (trackNumber: number, value: string) => {
+    console.log("trackNumber", trackNumber);
+    console.log("value", value);
+  };
+
+  const handleTrackChange = (trackNumber: number, value: string) => {
+    console.log("trackNumber", trackNumber);
+    console.log("change file name for", audioTracks[trackNumber]["name"]);
+    const newTrackNames: string[] = [...trackNames];
+    newTrackNames[trackNumber] = value;
+    setTrackNames(newTrackNames);
+    return false;
   };
 
   const hasAudioTracks = audioTracks.length > 0;
@@ -111,9 +131,11 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
       </div>
 
       <Playlist
-        audioTracks={audioTracks}
+        tracks={trackNames}
         artists={artists}
-        handleTrackOrderChange={moveTrack}
+        handleTrackOrderChange={handleTrackOrderChange}
+        handleArtistChange={handleArtistChange}
+        handleTrackChange={handleTrackChange}
       />
 
       <CreatePlayerButton

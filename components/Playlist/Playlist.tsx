@@ -1,15 +1,21 @@
-const Playlist = ({ audioTracks, artists, handleTrackOrderChange }: any) => {
+const Playlist = ({
+  tracks,
+  artists,
+  handleTrackOrderChange,
+  handleArtistChange,
+  handleTrackChange,
+}: any) => {
   return (
     <div className="flex flex-col gap-3 w-full">
-      {audioTracks.map((track: any, index: number) => (
-        <div key={track.name} className="flex">
+      {tracks.map((track: any, index: number) => (
+        <div key={"key" + index} className="flex">
           <div className="flex flex-col">
             {index > 0 && (
               <button onClick={() => handleTrackOrderChange(index, true)}>
                 up
               </button>
             )}
-            {index < audioTracks.length - 1 && (
+            {index < tracks.length - 1 && (
               <button onClick={() => handleTrackOrderChange(index, false)}>
                 down
               </button>
@@ -18,11 +24,17 @@ const Playlist = ({ audioTracks, artists, handleTrackOrderChange }: any) => {
           <li className="flex">
             <input
               className="text-black rounded-full p-5"
-              value={artists[index]}
+              placeholder={artists[index]}
+              onChange={(e) => handleArtistChange(index, e.target.value)}
             />
             <input
               className="text-black rounded-full p-5"
-              value={track["name"]}
+              value={track}
+              onChange={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleTrackChange(index, e.target.value);
+              }}
             />
           </li>
         </div>
