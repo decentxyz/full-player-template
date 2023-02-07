@@ -2,6 +2,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import Draggable from "react-draggable";
 import styles from "../../styles/Home.module.css";
 import CreatePlayerButton from "../CreatePlayerButton";
 import AudioUpload from "../MediaUpload/AudioUpload";
@@ -9,9 +10,23 @@ import ImageUpload from "../MediaUpload/ImageUpload";
 
 const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
   const [nftImage, setNftImage] = useState();
-  const [audioTracks, setAudioTracks] = useState();
+  const [audioTracks, setAudioTracks] = useState([]);
+  const [artists, setArtists] = useState([]);
   const [artist, setArtist] = useState("");
   const [projectTitle, setProjectTitle] = useState("");
+
+  const updateTrackList = (newTracks: any) => {
+    setAudioTracks(newTracks);
+    setArtists(Array(newTracks.length).fill(artist) as any);
+    console.log(
+      "Array(length).fill(artist) as any",
+      Array(newTracks.length).fill(artist) as any
+    );
+  };
+
+  const hasAudioTracks = audioTracks.length > 0;
+  console.log("audioTracks", audioTracks);
+  console.log("artists", artists);
 
   return (
     <main className={`${styles.main} flex gap-5`}>
@@ -58,15 +73,32 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
           label="cover art"
         />
         <AudioUpload
-          audioFile={{
-            preview: audioTracks
+          previewImage={
+            hasAudioTracks
               ? "/icons/success.png"
-              : "/icons/audio-placeholder.png",
-          }}
-          setAudioFile={setAudioTracks}
-          header={audioTracks && `${audioTracks["raw"]["length"]} track(s)`}
-          subtext={audioTracks && " "}
+              : "/icons/audio-placeholder.png"
+          }
+          setAudioFile={updateTrackList}
+          header={hasAudioTracks ? `${audioTracks.length} track(s)` : undefined}
+          subtext={audioTracks ? " " : undefined}
         />
+      </div>
+
+      <div className="flex flex-col gap-3">
+        {audioTracks.map((track, index) => (
+          <Draggable key={track["name"] an any} onStart={console.log}>
+            <li onDrop={(e) => onDrop(e, index)}>
+              <input
+                className="text-black rounded-full p-5 w-[150px] sm:w-full"
+                value={artists[index]}
+              />
+              <input
+                className="text-black rounded-full p-5 w-[150px] sm:w-full"
+                value={track["name"]}
+              />
+            </li>
+          </Draggable>
+        ))}
       </div>
 
       <CreatePlayerButton
