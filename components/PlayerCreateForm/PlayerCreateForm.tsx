@@ -4,14 +4,70 @@ import Link from "next/link";
 import { useState } from "react";
 import styles from "../../styles/Home.module.css";
 import CreatePlayerButton from "../CreatePlayerButton";
+import Playlist from "../Playlist";
 import AudioUpload from "../MediaUpload/AudioUpload";
 import ImageUpload from "../MediaUpload/ImageUpload";
 
 const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
   const [nftImage, setNftImage] = useState();
-  const [audioTracks, setAudioTracks] = useState();
+  const [audioTracks, setAudioTracks] = useState([]);
+  const [trackNames, setTrackNames] = useState([] as string[]);
+  const [artists, setArtists] = useState([] as string[]);
   const [artist, setArtist] = useState("");
   const [projectTitle, setProjectTitle] = useState("");
+
+  const updateTrackList = (newTracks: any) => {
+    setAudioTracks(newTracks);
+    setArtists(Array(newTracks.length).fill(artist) as any);
+    const newTrackNames = newTracks.map((track: any) => track.name);
+    setTrackNames(newTrackNames);
+  };
+
+  const handleTrackOrderChange = (
+    trackNumber: number,
+    isMoveEarlier: boolean
+  ) => {
+    const newTrackArray = [...audioTracks];
+    const newArtistArray = [...artists];
+    const newTrackNameArray = [...trackNames];
+    const item1Index = trackNumber;
+    const item2Index = isMoveEarlier ? trackNumber - 1 : trackNumber + 1;
+
+    [newTrackArray[item1Index], newTrackArray[item2Index]] = [
+      newTrackArray[item2Index],
+      newTrackArray[item1Index],
+    ];
+
+    [newArtistArray[item1Index], newArtistArray[item2Index]] = [
+      newArtistArray[item2Index],
+      newArtistArray[item1Index],
+    ];
+
+    [newTrackNameArray[item1Index], newTrackNameArray[item2Index]] = [
+      newTrackNameArray[item2Index],
+      newTrackNameArray[item1Index],
+    ];
+
+    setAudioTracks(newTrackArray);
+    setArtists(newArtistArray);
+    setTrackNames(newTrackNameArray);
+  };
+
+  const handleArtistChange = (trackNumber: number, value: string) => {
+    const newArtistNames: string[] = [...artists];
+    newArtistNames[trackNumber] = value;
+    setArtists(newArtistNames);
+    return false;
+  };
+
+  const handleTrackChange = (trackNumber: number, value: string) => {
+    const newTrackNames: string[] = [...trackNames];
+    newTrackNames[trackNumber] = value;
+    setTrackNames(newTrackNames);
+    return false;
+  };
+
+  const hasAudioTracks = audioTracks.length > 0;
 
   return (
     <main className={`${styles.main} flex gap-5`}>
@@ -58,22 +114,32 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
           label="cover art"
         />
         <AudioUpload
-          audioFile={{
-            preview: audioTracks
+          previewImage={
+            hasAudioTracks
               ? "/icons/success.png"
-              : "/icons/audio-placeholder.png",
-          }}
-          setAudioFile={setAudioTracks}
-          header={audioTracks && `${audioTracks["raw"]["length"]} track(s)`}
-          subtext={audioTracks && " "}
+              : "/icons/audio-placeholder.png"
+          }
+          setAudioFile={updateTrackList}
+          header={hasAudioTracks ? `${audioTracks.length} track(s)` : undefined}
+          subtext={audioTracks ? " " : undefined}
         />
       </div>
+
+      <Playlist
+        tracks={trackNames}
+        artists={artists}
+        handleTrackOrderChange={handleTrackOrderChange}
+        handleArtistChange={handleArtistChange}
+        handleTrackChange={handleTrackChange}
+      />
 
       <CreatePlayerButton
         coverArt={nftImage}
         tracks={audioTracks}
+        trackNames={trackNames}
         projectTitle={projectTitle}
         artist={artist}
+        artistNames={artists}
         setMetadata={setMetadata}
         setDeploymentStep={setDeploymentStep}
       />
