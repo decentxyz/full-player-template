@@ -1,16 +1,13 @@
 import Image from "next/image";
 
 const AudioUpload = ({
-  audioFile,
+  previewImage,
   setAudioFile,
   header = "Upload Audio Track(s)",
   subtext = "mp3 or .wav",
 }: any) => {
   const updateAudioFile = (e: any) => {
-    setAudioFile({
-      preview: "/icons/success.png",
-      raw: [...e.target.files],
-    });
+    setAudioFile([...e.target.files]);
   };
 
   return (
@@ -27,7 +24,7 @@ const AudioUpload = ({
             title=""
             width={68}
             height={59.23}
-            src={audioFile.preview}
+            src={previewImage}
             alt="nft image"
           />
         </p>
