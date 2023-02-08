@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
-import { DecentSDK, edition } from "@decent.xyz/sdk"; //Note: not using ipfs in demo
+import { DecentSDK, edition } from "@decent.xyz/sdk";
 import { useSigner, useNetwork } from "wagmi";
 import { ethers } from "ethers";
 import InfoField from "../InfoField";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { NFTStorage, Blob } from "nft.storage";
 import { useRouter } from "next/router";
