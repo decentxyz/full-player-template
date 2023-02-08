@@ -71,8 +71,8 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
 
   return (
     <main className={`${styles.main} flex gap-5`}>
-      <div className="flex items-center gap-4">
-        <ConnectButton />
+      <h1 className={`${styles.title} font-medium flex items-center gap-10`}>
+        Player Creator{" "}
         <Link
           href="https://github.com/SweetmanTech/kpi-dashboard"
           target="_blank"
@@ -84,9 +84,23 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
             alt="link to repository"
           />
         </Link>
-      </div>
-
-      <h1 className={`${styles.title} font-medium`}>Player Creator</h1>
+      </h1>
+      <p className="text-center">
+        Welcome to the Music NFT Player Creator, a gateway to the harmonious
+        fusion of onchain and offchain artistry. It empowers musicians to
+        unleash their creative energies, imprinting them onto the blockchain as
+        ethereal offerings for the world to behold. Unlike other music NFTs, the
+        player within each unique creation invites listeners on a journey of
+        sound and emotion, elevating the musical experience to a higher plane.{" "}
+        <a
+          href="https://sweetman-eth.gitbook.io/music-nft-player/"
+          target="_blank"
+          rel="noreferrer"
+          className="hover:text-[#3b1675]"
+        >
+          Learn more here.
+        </a>
+      </p>
       <div className="flex gap-10">
         <div className="flex flex-col items-center">
           <p className="pb-2 font-medium">Project Name</p>

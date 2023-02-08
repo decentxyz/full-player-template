@@ -3,6 +3,7 @@ import { useState } from "react";
 import { NFTStorage } from "nft.storage";
 import { ipfs } from "@decent.xyz/sdk";
 import getIpfsLink from "../../lib/getIpfsLink";
+import Button from "../Button";
 
 const CreatePlayerButton = ({
   coverArt,
@@ -91,13 +92,7 @@ const CreatePlayerButton = ({
   };
 
   return (
-    <button
-      onClick={onClick}
-      className={`${styles.card} disabled:opacity-75`}
-      disabled={loading}
-    >
-      <h2 className="font-medium">Create Player &rarr;</h2>
-    </button>
+    <Button disabled={loading} text="Create Player &rarr;" onClick={onClick} />
   );
 };
 
