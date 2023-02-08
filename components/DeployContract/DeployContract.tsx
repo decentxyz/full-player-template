@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
-import { DecentSDK, edition, ipfs } from "@decent.xyz/sdk"; //Note: not using ipfs in demo
+import { DecentSDK, edition } from "@decent.xyz/sdk"; //Note: not using ipfs in demo
 import { useSigner, useNetwork } from "wagmi";
 import { ethers } from "ethers";
 import InfoField from "../InfoField";
@@ -9,6 +9,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { NFTStorage, Blob } from "nft.storage";
 import { useRouter } from "next/router";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 const schema = yup.object().shape({
   collectionName: yup.string().required("Name your collection."),
@@ -61,6 +62,7 @@ const DeployContract = ({ metadata, setDeploymentStep }: any) => {
   const { data: signer } = useSigner();
   const { chain } = useNetwork();
   const router = useRouter();
+  const { openConnectModal } = useConnectModal();
 
   const methods = useForm<FormData>({
     resolver: yupResolver(schema),
@@ -90,6 +92,7 @@ const DeployContract = ({ metadata, setDeploymentStep }: any) => {
     try {
       if (!signer) {
         console.error("Please connect wallet.");
+        openConnectModal?.();
       } else if (chain) {
         // create metadata
         const finalMetadata = {
@@ -135,10 +138,17 @@ const DeployContract = ({ metadata, setDeploymentStep }: any) => {
             `ipfs://${ipfs}?`, // contractURI
             `ipfs://${ipfs}?`, // metadataURI
             null, // metadataRendererInit
-            null // tokenGateConfig
+            null, // tokenGateConfig
+            () => {
+              setDeploymentStep(3);
+            },
+            () => {
+              setDeploymentStep(4);
+            }
           );
         } catch (error) {
           console.error(error);
+          setDeploymentStep(0);
         } finally {
           if (nft?.address) {
             router.push(
@@ -146,7 +156,6 @@ const DeployContract = ({ metadata, setDeploymentStep }: any) => {
             );
           }
         }
-        setDeploymentStep(0);
       }
       return;
     } catch (error: any) {
