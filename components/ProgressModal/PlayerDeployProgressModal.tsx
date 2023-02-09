@@ -45,8 +45,6 @@ const PlayerDeployProgressModal = (props: any) => {
   const uploaded = hideUpload || step > 1;
   const signed = hideUpload ? step > 1 : step > 2;
   const confirmed = hideUpload ? step > 2 : step > 3;
-  const signedMint = hideUpload ? step > 3 : step > 4;
-  const confirmedMint = hideUpload ? step > 4 : step > 5;
   return (
     <div className="bg-background bg-opacity-10 backdrop-blur-lg z-20 drop-shadow-lg rounded max-w-sm min-w-fit mx-auto p-4 space-y-4">
       {!hideUpload && (
@@ -94,7 +92,7 @@ const PlayerDeployProgressModal = (props: any) => {
               ? loadingStates[2].status
               : loadingStates[1].status}
             <p className="text-lg text-white font-medium flex">
-              Sign the transaction to Deploy
+              Sign the transaction
             </p>
           </div>
           <p className="text-white text-xs pl-8 pt-1 font-thin">
@@ -127,9 +125,7 @@ const PlayerDeployProgressModal = (props: any) => {
               : confirmed
               ? loadingStates[2].status
               : loadingStates[1].status}
-            <p className="text-lg text-white font-medium flex">
-              Finalizing Contract
-            </p>
+            <p className="text-lg text-white font-medium flex">Finalizing</p>
           </div>
           <p className="text-white text-xs pl-8 pt-1 font-thin">
             Confirming transaction
@@ -156,88 +152,6 @@ const PlayerDeployProgressModal = (props: any) => {
             </p>
           )}
           {confirmed ? (
-            <p className="text-green pt-2 flex justify-end">
-              <AiFillCheckCircle style={{ height: 10, width: 10 }} />
-            </p>
-          ) : (
-            <p className="text-white pt-2 flex justify-end">
-              <BsCircle style={{ height: 10, width: 10 }} />
-            </p>
-          )}
-        </div>
-      </div>
-
-      <div className="w-full justify-between gap-2 flex justify-end">
-        <div>
-          <div className="flex gap-3">
-            {!confirmed
-              ? loadingStates[0].status
-              : signedMint
-              ? loadingStates[2].status
-              : loadingStates[1].status}
-            <p className="text-lg text-white font-medium flex">
-              Sign the transaction to Mint
-            </p>
-          </div>
-          <p className="text-white text-xs pl-8 pt-1 font-thin">
-            Open wallet and sign
-          </p>
-        </div>
-        <div>
-          {!confirmed
-            ? loadingMessages[0].status
-            : signedMint
-            ? loadingMessages[2].status
-            : loadingMessages[1].status}
-          {signedMint ? (
-            <p className="text-green pt-2 flex justify-end">
-              <AiFillCheckCircle style={{ height: 12, width: 12 }} />
-            </p>
-          ) : (
-            <p className="text-white pt-2 flex justify-end">
-              <BsCircle style={{ height: 10, width: 10 }} />
-            </p>
-          )}
-        </div>
-      </div>
-
-      <div className="w-full justify-between gap-2 flex justify-end">
-        <div>
-          <div className="flex gap-3">
-            {!signedMint
-              ? loadingStates[0].status
-              : confirmedMint
-              ? loadingStates[2].status
-              : loadingStates[1].status}
-            <p className="text-lg text-white font-medium flex">
-              Finalizing Mint
-            </p>
-          </div>
-          <p className="text-white text-xs pl-8 pt-1 font-thin">
-            Confirming transaction
-          </p>
-          <p className="text-white text-xs pl-8 pt-1 font-thin">
-            {props.chain
-              ? `Confirmed on ${props.chain}`
-              : "Please reconnect wallet"}
-          </p>
-        </div>
-        <div>
-          {!signedMint
-            ? loadingMessages[0].status
-            : confirmedMint
-            ? loadingMessages[2].status
-            : loadingMessages[1].status}
-          {confirmedMint ? (
-            <p className="text-green pt-2 flex justify-end">
-              <AiFillCheckCircle style={{ height: 12, width: 12 }} />
-            </p>
-          ) : (
-            <p className="text-white pt-2 flex justify-end">
-              <BsCircle style={{ height: 10, width: 10 }} />
-            </p>
-          )}
-          {confirmedMint ? (
             <p className="text-green pt-2 flex justify-end">
               <AiFillCheckCircle style={{ height: 10, width: 10 }} />
             </p>

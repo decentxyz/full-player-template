@@ -2,6 +2,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "../../styles/Home.module.css";
+import DeployContract from "../DeployContract";
 import MintButton from "../MintButton";
 
 const MintingForm = ({ metadata, setDeploymentStep }: any) => {
@@ -35,7 +36,10 @@ const MintingForm = ({ metadata, setDeploymentStep }: any) => {
         />
       )}
 
-      <MintButton metadata={metadata} setDeploymentStep={setDeploymentStep} />
+      <DeployContract
+        metadata={metadata}
+        setDeploymentStep={setDeploymentStep}
+      />
     </main>
   );
 };
