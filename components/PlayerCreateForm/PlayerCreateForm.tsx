@@ -72,9 +72,9 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
   return (
     <main className={`${styles.main} flex gap-5`}>
       <h1 className={`${styles.title} font-medium flex items-center gap-10`}>
-        Player Creator{" "}
+        Music NFT Player
         <Link
-          href="https://github.com/SweetmanTech/kpi-dashboard"
+          href="https://github.com/decentxyz/full-player-template"
           target="_blank"
         >
           <Image
@@ -86,12 +86,7 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
         </Link>
       </h1>
       <p className="text-center">
-        Welcome to the Music NFT Player Creator, a gateway to the harmonious
-        fusion of onchain and offchain artistry. It empowers musicians to
-        unleash their creative energies, imprinting them onto the blockchain as
-        ethereal offerings for the world to behold. Unlike other music NFTs, the
-        player within each unique creation invites listeners on a journey of
-        sound and emotion, elevating the musical experience to a higher plane.{" "}
+        Launch a full audio player as an NFT so that your collectors can listen to albums or playlists.{" "}
         <a
           href="https://sweetman-eth.gitbook.io/music-nft-player/"
           target="_blank"
