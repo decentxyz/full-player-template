@@ -33,6 +33,8 @@ const yupSchema = yup.object().shape({
     nftImage: yup.mixed().test("file", "Upload your NFT art.", (value) => {
       return value?.length > 0;
     }),
+    saleStartDate: yup.string(),
+    saleEndDate: yup.string(),
 });
 
 export default yupSchema
