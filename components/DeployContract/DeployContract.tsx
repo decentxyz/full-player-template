@@ -50,6 +50,7 @@ const DeployContract = ({ metadata, setMetadata, setDeploymentStep }: any) => {
   const [isHovering5, setIsHovering5] = useState(false);
   const [saleStart, setSaleStart] = useState(0);
   const [saleEnd, setSaleEnd] = useState(0);
+  const [size, setSize] = useState("open" as string);
 
   useEffect(() => {
     console.log("checking...");
@@ -176,6 +177,12 @@ const DeployContract = ({ metadata, setMetadata, setDeploymentStep }: any) => {
     }
   };
 
+  function handleChange(e: any) {
+    let value = e.target.value;
+    console.log("value", value);
+    setSize(value);
+  }
+
   const inputClass = "border border-black text-black rounded-lg p-3";
   return (
     <>
@@ -196,17 +203,39 @@ const DeployContract = ({ metadata, setMetadata, setDeploymentStep }: any) => {
             </div>
 
             <div>
-              <div className="pb-2 flex gap-1 items-center">
-                <p className="font-header">Edition Size</p>
+              <div className="pb-2 flex items-center">
+                <label>Edition Size</label>
                 <InfoField
-                  isHovering={isHovering1}
-                  setIsHovering={setIsHovering1}
-                  xDirection={"right"}
+                  xDirection={"left"}
                   yDirection={"bottom"}
-                  infoText={"Number of NFTs available in the collection."}
+                  infoText={
+                    "Fixed Editions limit the supply of NFTs to whatever value you enter - enter 1 for a 1 of 1 release.  Fixed editions promote scarcity value and are best for rare assets with high financial or cultural value. If you would like unlimited editions, please use Crescendo."
+                  }
                 />
               </div>
-              <input className={inputClass} {...register("editionSize")} />
+              <div className="flex items-center w-full relative gap-4">
+                <select
+                  onChange={(e) => handleChange(e)}
+                  className="px-3 py-2 rounded-full border border-[#E4E3E7] cursor-pointer text-black"
+                  name="editionSize"
+                  value={size}
+                  id="size"
+                >
+                  <option value="fixed">Fixed</option>
+                  <option value="open">Open</option>
+                </select>
+
+                <input
+                  disabled={size === ("open" as any)}
+                  className={inputClass}
+                  {...register("editionSize")}
+                />
+
+                <p className="text-sm absolute right-3">Editions</p>
+              </div>
+              <p className="error-text">
+                <ErrorMessage errors={errors} name="editionSize" />
+              </p>
             </div>
 
             <div>
