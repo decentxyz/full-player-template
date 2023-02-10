@@ -7,7 +7,7 @@ import PlayerCreatePage from "../PlayerCreatePage";
 const Home: NextPage = () => {
   const [entered, setEntered] = useState(false);
 
-  return (
+  return <>
     <div className={`${styles.container} background`}>
       {entered ? (
         <PlayerCreatePage />
@@ -15,7 +15,7 @@ const Home: NextPage = () => {
         <LaunchPage onClick={() => setEntered(true)} />
       )}
     </div>
-  );
+  </>;
 };
 
 export default Home;
