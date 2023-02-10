@@ -142,10 +142,10 @@ const DeployContract = ({ metadata, setMetadata, setDeploymentStep }: any) => {
             getValues("maxTokenPurchase") || 0, // maxTokensPurchase
             null, //presaleMerkleRoot
             formattedStartDate, // presaleStart
-            100, // presaleEnd
+            formattedEndDate, // presaleEnd
             formattedStartDate, // saleStart
-            100, // saleEnd
-            getValues("royalty") * 100, // royaltyBPS
+            formattedEndDate, // saleEnd
+            getValues("royalty") * 100 || 0, // royaltyBPS
             `ipfs://${ipfs}?`, // contractURI
             `ipfs://${ipfs}?`, // metadataURI
             null, // metadataRendererInit
