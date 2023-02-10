@@ -134,7 +134,7 @@ const DeployContract = ({ metadata, setDeploymentStep }: any) => {
   return (
     <>
       <FormProvider {...methods}>
-        <form onSubmit={onSubmit} className="gap-4 lg:mx-24 sm:mx-16">
+        <form onSubmit={onSubmit} className="gap-4">
           <div className="flex flex-wrap items-center gap-12">
             <div>
               <p className="font-header">Collection Name</p>
@@ -247,7 +247,7 @@ const DeployContract = ({ metadata, setDeploymentStep }: any) => {
           >
             <input
               type="submit"
-              className="cursor-pointer bg-white text-black px-4 py-1 rounded-full"
+              className="cursor-pointer bg-black text-white px-8 py-2 rounded-full hover:bg-opacity-80"
             />
           </button>
         </form>

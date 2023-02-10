@@ -2,10 +2,10 @@ import Head from "next/head";
 
 const SeoHead = () => (
   <Head>
-    <title>Dashboard Starter</title>
+    <title>Decent App</title>
     <meta
       name="description"
-      content="A template for creating Dashboards with the Decent Protocol"
+      content="Release full audio players as NFTs"
     />
     <link rel="icon" href="/images/favi.png" />
     <meta
