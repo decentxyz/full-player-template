@@ -5,7 +5,7 @@ import styles from "../../styles/Home.module.css";
 import DeployContract from "../DeployContract";
 import MintButton from "../MintButton";
 
-const MintingForm = ({ metadata, setDeploymentStep }: any) => {
+const MintingForm = ({ metadata, setMetadata, setDeploymentStep }: any) => {
   return (
     <main className={`${styles.main} flex gap-5`}>
       <div className="flex items-center gap-4">
@@ -38,6 +38,7 @@ const MintingForm = ({ metadata, setDeploymentStep }: any) => {
 
       <DeployContract
         metadata={metadata}
+        setMetadata={setMetadata}
         setDeploymentStep={setDeploymentStep}
       />
     </main>

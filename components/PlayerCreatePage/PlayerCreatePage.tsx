@@ -29,6 +29,7 @@ const PlayerCreatePage: NextPage = () => {
             <MintingForm
               metadata={metadata}
               setDeploymentStep={setDeploymentStep}
+              setMetadata={setMetadata}
             />
           ) : (
             <PlayerCreateForm

@@ -10,6 +10,8 @@ import { NFTStorage, Blob } from "nft.storage";
 import { useRouter } from "next/router";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import yupSchema from "../../lib/yupSchema";
+import SaleDates from "./SaleDates";
+import handleTxError from "../../lib/handleTxError";
 
 type FormData = {
   collectionName: string;
@@ -23,7 +25,7 @@ type FormData = {
   royalty: number;
 };
 
-const DeployContract = ({ metadata, setDeploymentStep }: any) => {
+const DeployContract = ({ metadata, setMetadata, setDeploymentStep }: any) => {
   const { data: signer } = useSigner();
   const { chain } = useNetwork();
   const router = useRouter();
@@ -44,13 +46,24 @@ const DeployContract = ({ metadata, setDeploymentStep }: any) => {
   const [isHovering1, setIsHovering1] = useState(false);
   const [isHovering2, setIsHovering2] = useState(false);
   const [isHovering3, setIsHovering3] = useState(false);
+  const [isHovering4, setIsHovering4] = useState(false);
+  const [isHovering5, setIsHovering5] = useState(false);
+  const [saleStart, setSaleStart] = useState(0);
+  const [saleEnd, setSaleEnd] = useState(0);
 
   useEffect(() => {
+    console.log("checking...");
     if (!metadata?.name) return;
+    console.log("metadata", metadata);
     setValue("collectionName", metadata.name);
-    setValue("symbol", metadata.artist);
-    setValue("editionSize", 11);
-    setValue("tokenPrice", "0.0111");
+    setValue("symbol", metadata.symbol || metadata.artist);
+    setValue("editionSize", metadata.editionSize || 11);
+    setValue("tokenPrice", metadata.tokenPrice || "0.0111");
+    setSaleStart(metadata.saleStart);
+    setSaleEnd(metadata.saleEnd);
+    setValue("royalty", metadata.royalty);
+    setValue("maxTokenPurchase", metadata.maxTokenPurchase);
+    setValue("description", metadata.description);
   }, [metadata]);
 
   const deployFunction = async () => {
@@ -84,6 +97,39 @@ const DeployContract = ({ metadata, setDeploymentStep }: any) => {
         const sdk = new DecentSDK(chain.id, signer);
         let nft;
 
+        setMetadata({
+          ...metadata,
+          editionSize: getValues("editionSize"),
+          tokenPrice: getValues("tokenPrice"),
+          maxTokenPurchase: getValues("maxTokenPurchase"),
+          saleStart,
+          saleEnd,
+          royalty: getValues("royalty"),
+          description: getValues("description"),
+          name: getValues("collectionName"),
+          symbol: getValues("symbol"),
+        });
+
+        const dateToEpochTime = (date: Date) =>
+          Math.floor(date.getTime() / 1000);
+        const UINT64_MAX = "18446744073709551615";
+        const UINT64_MINUS_ONE = ethers.BigNumber.from(UINT64_MAX)
+          .sub(1)
+          .toString();
+
+        const formattedStartDate = saleStart
+          ? dateToEpochTime(new Date(saleStart))
+          : 0;
+
+        console.log("saleEnd", saleEnd);
+
+        const formattedEndDate =
+          saleEnd > 0
+            ? dateToEpochTime(new Date(saleEnd))
+            : ethers.BigNumber.from(UINT64_MINUS_ONE);
+
+        console.log("formattedStartDate", formattedStartDate);
+        console.log("formattedEndDate", formattedEndDate);
         try {
           setDeploymentStep(2);
           nft = await edition.deploy(
@@ -95,10 +141,10 @@ const DeployContract = ({ metadata, setDeploymentStep }: any) => {
             ethers.utils.parseEther(getValues("tokenPrice")), // tokenPrice
             getValues("maxTokenPurchase") || 0, // maxTokensPurchase
             null, //presaleMerkleRoot
-            0, // presaleStart
-            0, // presaleEnd
-            0, // saleStart
-            Math.floor(new Date().getTime() / 1000 + 60 * 60 * 24 * 365), // saleEnd = 1 year
+            formattedStartDate, // presaleStart
+            100, // presaleEnd
+            formattedStartDate, // saleStart
+            100, // saleEnd
             getValues("royalty") * 100, // royaltyBPS
             `ipfs://${ipfs}?`, // contractURI
             `ipfs://${ipfs}?`, // metadataURI
@@ -112,7 +158,7 @@ const DeployContract = ({ metadata, setDeploymentStep }: any) => {
             }
           );
         } catch (error) {
-          console.error(error);
+          handleTxError(error);
           setDeploymentStep(0);
         } finally {
           if (nft?.address) {
@@ -225,6 +271,19 @@ const DeployContract = ({ metadata, setDeploymentStep }: any) => {
                 <p className="text-sm absolute right-3">%</p>
               </div>
             </div>
+
+            <SaleDates
+              hovers={{
+                isHovering4,
+                isHovering5,
+                setIsHovering4,
+                setIsHovering5,
+              }}
+              saleStart={saleStart}
+              saleEnd={saleEnd}
+              setSaleStart={setSaleStart}
+              setSaleEnd={setSaleEnd}
+            />
           </div>
 
           <div>
