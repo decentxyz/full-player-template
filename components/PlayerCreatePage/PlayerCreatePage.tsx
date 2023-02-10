@@ -14,7 +14,7 @@ const PlayerCreatePage: NextPage = () => {
   const { chain } = useNetwork();
 
   return (
-    <div className={`${styles.container} background`}>
+    <div className={`${styles.container}`}>
       <SeoHead />
       {deploymentStep > 0 ? (
         <TxScreen

@@ -22,15 +22,15 @@ const AudioUpload = ({
         <p style={{ left: 17, top: 9 }}>
           <Image
             title=""
-            width={68}
-            height={59.23}
+            width={30}
+            height={26.32}
             src={previewImage}
             alt="nft image"
           />
         </p>
         <div>
           <p className="upload-header">{header}</p>
-          <p className="upload-subtext">{subtext}</p>
+          <p className="upload-subtext">.wav, .ogg, .mp3{subtext}</p>
         </div>
       </div>
     </label>

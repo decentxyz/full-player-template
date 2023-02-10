@@ -21,8 +21,8 @@ const ImageUpload = ({ nftImage, setNftImage, label }: any) => {
         <p style={{ left: 17, top: 9 }}>
           <Image
             title=""
-            width={68}
-            height={59.23}
+            width={30}
+            height={26.32}
             src={nftImage?.preview || "/icons/img-placeholder.png"}
             alt="nft image"
           />
