@@ -3,7 +3,8 @@
 The purpose of this repository is to get you up & running quickly with the Decent SDK (@decent.xyz/sdk) for Full Music Player Apps (such as [WarpSound](https://warpsound.gitbook.io/nft-music-player-template/nft-music-player-template/what-is-the-nft-music-player-template)).
 
 ## Template UI
-<img width="828" alt="Screenshot 2023-01-31 at 1 40 47 PM" src="https://user-images.githubusercontent.com/23249402/215829800-01d4578f-a57c-411c-8367-e56b2313b043.png">
+<img width="1440" alt="Screenshot 2023-02-12 at 8 46 36 AM" src="https://user-images.githubusercontent.com/23249402/218309039-4e892853-65d8-4f69-af1a-1ea1067c4322.png">
+
 
 ## Full Album Player - by [WarpSound](https://warpsound.gitbook.io/nft-music-player-template/nft-music-player-template/what-is-the-nft-music-player-template)
 ![FULL_ALBUM](https://user-images.githubusercontent.com/23249402/215785742-277b4a80-c264-4e65-af8e-7e2e9ec6d72c.gif)
