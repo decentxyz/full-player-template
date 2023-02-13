@@ -25,6 +25,8 @@ type FormData = {
   royalty: number;
 };
 
+const INFINITY = "∞";
+
 const DeployContract = ({ metadata, setMetadata, setDeploymentStep }: any) => {
   const { data: signer } = useSigner();
   const { chain } = useNetwork();
@@ -185,6 +187,9 @@ const DeployContract = ({ metadata, setMetadata, setDeploymentStep }: any) => {
   function handleChange(e: any) {
     let value = e.target.value;
     console.log("value", value);
+    if (value !== "open") {
+      setValue("editionSize", 11);
+    }
     setSize(value);
   }
 
@@ -258,16 +263,11 @@ const DeployContract = ({ metadata, setMetadata, setDeploymentStep }: any) => {
                   <option value="open">Open</option>
                 </select>
 
-                <input
-                  disabled={size === ("open" as any)}
-                  className={inputClass}
-                  value={
-                    (size === ("open" as any)
-                      ? "∞"
-                      : getValues("editionSize")) as string
-                  }
-                  {...register("editionSize")}
-                />
+                {isOpenEdition ? (
+                  <input disabled className={inputClass} value={INFINITY} />
+                ) : (
+                  <input className={inputClass} {...register("editionSize")} />
+                )}
 
                 <p className="text-sm absolute right-3">Editions</p>
               </div>
