@@ -69,61 +69,62 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
   const hasAudioTracks = audioTracks.length > 0;
 
   return (
-    <main style={{ backgroundImage: "url('/images/bg.png')"}} className="w-screen min-h-screen bg-cover">
-      <div className="min-h-screen grid md:grid-cols-2 grid-cols-1">
-        <div className="flex flex-wrap items-center">
-          <div className="space-y-8">
-            <h1>Create Player</h1>
-            <p className="w-2/3">
-              Step 1 / 2: Upload the media that you would like to include in your full player NFT.{" "}
-              <a
-                href="https://sweetman-eth.gitbook.io/music-nft-player/"
-                target="_blank"
-                rel="noreferrer"
-                className="font-medium tracking-widest text-sm hover:text-violet-700"
-              >
-                Learn more here.
-              </a>
-            </p>
-          </div>
+    <div className="min-h-screen grid md:grid-cols-2 grid-cols-1">
+      <div className="flex flex-wrap items-center sm:pl-10">
+        <div className="space-y-8">
+          <h1>Create Player</h1>
+          <p className="w-2/3">
+            Step 1 / 2: Upload the media that you would like to include in your
+            full player NFT.{" "}
+            <a
+              href="https://sweetman-eth.gitbook.io/music-nft-player/"
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium tracking-widest text-sm hover:text-violet-700"
+            >
+              Learn more here.
+            </a>
+          </p>
         </div>
-        <div className="flex flex-wrap items-center">
-          <div>
-            <div className="flex gap-10">
-              <div>
-                <p className="pb-2 font-medium">Project Name</p>
-                <input
-                  className={`input-text text-black rounded-full py-2 px-4 border border-black`}
-                  placeholder="Artist name"
-                  onChange={(e) => setProjectTitle(e.target.value)}
-                />
-              </div>
-              <div>
-                <p className="pb-2 font-medium">Artist Name</p>
-                <input
-                  className={`input-text text-black rounded-full  py-2 px-4 border border-black`}
-                  placeholder="X&ND"
-                  onChange={(e) => setArtist(e.target.value)}
-                />
-              </div>
+      </div>
+      <div className="flex flex-wrap items-center">
+        <div>
+          <div className="flex gap-10">
+            <div>
+              <p className="pb-2 font-medium">Project Name</p>
+              <input
+                className={`input-text text-black rounded-full py-2 px-4 border border-black`}
+                placeholder="project name"
+                onChange={(e) => setProjectTitle(e.target.value)}
+              />
             </div>
-            <div className="space-y-8">
-              <ImageUpload
-                nftImage={nftImage}
-                setNftImage={setNftImage}
-                label="Cover art"
+            <div>
+              <p className="pb-2 font-medium">Artist Name</p>
+              <input
+                className={`input-text text-black rounded-full  py-2 px-4 border border-black`}
+                placeholder="artist name"
+                onChange={(e) => setArtist(e.target.value)}
               />
-              <AudioUpload
-                previewImage={
-                  hasAudioTracks
-                    ? "/icons/success.png"
-                    : "/icons/audio-placeholder.png"
-                }
-                setAudioFile={updateTrackList}
-                header={hasAudioTracks ? `${audioTracks.length} track(s)` : undefined}
-                subtext={audioTracks ? " " : undefined}
-              />
-            
+            </div>
+          </div>
+          <div className="space-y-8">
+            <ImageUpload
+              nftImage={nftImage}
+              setNftImage={setNftImage}
+              label="Cover art"
+            />
+            <AudioUpload
+              previewImage={
+                hasAudioTracks
+                  ? "/icons/success.png"
+                  : "/icons/audio-placeholder.png"
+              }
+              setAudioFile={updateTrackList}
+              header={
+                hasAudioTracks ? `${audioTracks.length} track(s)` : undefined
+              }
+              subtext={audioTracks ? " " : undefined}
+            />
 
             <Playlist
               tracks={trackNames}
@@ -143,11 +144,10 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
               setMetadata={setMetadata}
               setDeploymentStep={setDeploymentStep}
             />
-            </div>
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 

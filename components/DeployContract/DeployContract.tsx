@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { DecentSDK, edition } from "@decent.xyz/sdk";
@@ -10,6 +10,8 @@ import { NFTStorage, Blob } from "nft.storage";
 import { useRouter } from "next/router";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import yupSchema from "../../lib/yupSchema";
+import SaleDates from "./SaleDates";
+import handleTxError from "../../lib/handleTxError";
 
 type FormData = {
   collectionName: string;
@@ -23,7 +25,9 @@ type FormData = {
   royalty: number;
 };
 
-const DeployContract = ({ metadata, setDeploymentStep }: any) => {
+const INFINITY = "∞";
+
+const DeployContract = ({ metadata, setMetadata, setDeploymentStep }: any) => {
   const { data: signer } = useSigner();
   const { chain } = useNetwork();
   const router = useRouter();
@@ -44,13 +48,24 @@ const DeployContract = ({ metadata, setDeploymentStep }: any) => {
   const [isHovering1, setIsHovering1] = useState(false);
   const [isHovering2, setIsHovering2] = useState(false);
   const [isHovering3, setIsHovering3] = useState(false);
+  const [isHovering4, setIsHovering4] = useState(false);
+  const [isHovering5, setIsHovering5] = useState(false);
+  const [saleStart, setSaleStart] = useState(0);
+  const [saleEnd, setSaleEnd] = useState(0);
+  const [size, setSize] = useState("open" as string);
+  const isOpenEdition = useMemo(() => size === ("open" as any), [size]);
 
   useEffect(() => {
     if (!metadata?.name) return;
     setValue("collectionName", metadata.name);
-    setValue("symbol", metadata.artist);
-    setValue("editionSize", 11);
-    setValue("tokenPrice", "0.0111");
+    setValue("symbol", metadata.symbol || metadata.artist);
+    setValue("editionSize", metadata.editionSize || 11);
+    setValue("tokenPrice", metadata.tokenPrice || "0.0111");
+    setSaleStart(metadata.saleStart);
+    setSaleEnd(metadata.saleEnd);
+    setValue("royalty", metadata.royalty);
+    setValue("maxTokenPurchase", metadata.maxTokenPurchase);
+    setValue("description", metadata.description);
   }, [metadata]);
 
   const deployFunction = async () => {
@@ -84,6 +99,39 @@ const DeployContract = ({ metadata, setDeploymentStep }: any) => {
         const sdk = new DecentSDK(chain.id, signer);
         let nft;
 
+        const editionSize = isOpenEdition
+          ? 9999999999
+          : getValues("editionSize");
+
+        setMetadata({
+          ...metadata,
+          editionSize,
+          tokenPrice: getValues("tokenPrice"),
+          maxTokenPurchase: getValues("maxTokenPurchase"),
+          saleStart,
+          saleEnd,
+          royalty: getValues("royalty"),
+          description: getValues("description"),
+          name: getValues("collectionName"),
+          symbol: getValues("symbol"),
+        });
+
+        const dateToEpochTime = (date: Date) =>
+          Math.floor(date.getTime() / 1000);
+        const UINT64_MAX = "18446744073709551615";
+        const UINT64_MINUS_ONE = ethers.BigNumber.from(UINT64_MAX)
+          .sub(1)
+          .toString();
+
+        const formattedStartDate = saleStart
+          ? dateToEpochTime(new Date(saleStart))
+          : 0;
+
+        const formattedEndDate =
+          saleEnd > 0
+            ? dateToEpochTime(new Date(saleEnd))
+            : ethers.BigNumber.from(UINT64_MINUS_ONE);
+
         try {
           setDeploymentStep(2);
           nft = await edition.deploy(
@@ -91,15 +139,15 @@ const DeployContract = ({ metadata, setDeploymentStep }: any) => {
             getValues("collectionName"), // name
             getValues("symbol"), // symbol
             false, // hasAdjustableCap
-            getValues("editionSize"), // maxTokens
+            editionSize, // maxTokens
             ethers.utils.parseEther(getValues("tokenPrice")), // tokenPrice
             getValues("maxTokenPurchase") || 0, // maxTokensPurchase
             null, //presaleMerkleRoot
-            0, // presaleStart
-            0, // presaleEnd
-            0, // saleStart
-            Math.floor(new Date().getTime() / 1000 + 60 * 60 * 24 * 365), // saleEnd = 1 year
-            getValues("royalty") * 100, // royaltyBPS
+            formattedStartDate, // presaleStart
+            formattedEndDate, // presaleEnd
+            formattedStartDate, // saleStart
+            formattedEndDate, // saleEnd
+            getValues("royalty") * 100 || 0, // royaltyBPS
             `ipfs://${ipfs}?`, // contractURI
             `ipfs://${ipfs}?`, // metadataURI
             null, // metadataRendererInit
@@ -112,7 +160,7 @@ const DeployContract = ({ metadata, setDeploymentStep }: any) => {
             }
           );
         } catch (error) {
-          console.error(error);
+          handleTxError(error);
           setDeploymentStep(0);
         } finally {
           if (nft?.address) {
@@ -129,6 +177,14 @@ const DeployContract = ({ metadata, setDeploymentStep }: any) => {
       }
     }
   };
+
+  function handleChange(e: any) {
+    let value = e.target.value;
+    if (value !== "open") {
+      setValue("editionSize", 11);
+    }
+    setSize(value);
+  }
 
   const inputClass = "border border-black text-black rounded-lg p-3";
   return (
@@ -150,17 +206,67 @@ const DeployContract = ({ metadata, setDeploymentStep }: any) => {
             </div>
 
             <div>
-              <div className="pb-2 flex gap-1 items-center">
-                <p className="font-header">Edition Size</p>
+              <p className="font-header">Symbol</p>
+              <input
+                className={inputClass}
+                {...register("symbol", {
+                  required: "Give your collection a symbol",
+                })}
+              />
+              <p className="text-red-600 text-sm">
+                <ErrorMessage errors={errors} name="symbol" />
+              </p>
+            </div>
+
+            <div className="w-full">
+              <p className="font-header">Description</p>
+              <textarea
+                className={`${inputClass} w-1/2`}
+                {...register("description", {
+                  required: "Please enter a description.",
+                })}
+              />
+              <p className="text-red-600 text-sm">
+                <ErrorMessage errors={errors} name="description" />
+              </p>
+            </div>
+
+            <div>
+              <div className="pb-2 flex items-center">
+                <label>Edition Size</label>
                 <InfoField
                   isHovering={isHovering1}
                   setIsHovering={setIsHovering1}
-                  xDirection={"right"}
+                  xDirection={"left"}
                   yDirection={"bottom"}
-                  infoText={"Number of NFTs available in the collection."}
+                  infoText={
+                    "Fixed Editions limit the supply of NFTs to whatever value you enter - enter 1 for a 1 of 1 release.  Fixed editions promote scarcity value and are best for rare assets with high financial or cultural value. If you would like unlimited editions, please use Crescendo."
+                  }
                 />
               </div>
-              <input className={inputClass} {...register("editionSize")} />
+              <div className="flex items-center w-full relative gap-4">
+                <select
+                  onChange={(e) => handleChange(e)}
+                  className="px-3 py-2 rounded-full border border-[#E4E3E7] cursor-pointer text-black"
+                  name="editionSize"
+                  value={size}
+                  id="size"
+                >
+                  <option value="fixed">Fixed</option>
+                  <option value="open">Open</option>
+                </select>
+
+                {isOpenEdition ? (
+                  <input disabled className={inputClass} value={INFINITY} />
+                ) : (
+                  <input className={inputClass} {...register("editionSize")} />
+                )}
+
+                <p className="text-sm absolute right-3">Editions</p>
+              </div>
+              <p className="error-text">
+                <ErrorMessage errors={errors} name="editionSize" />
+              </p>
             </div>
 
             <div>
@@ -177,19 +283,6 @@ const DeployContract = ({ metadata, setDeploymentStep }: any) => {
                 />
               </div>
               <input className={inputClass} {...register("maxTokenPurchase")} />
-            </div>
-
-            <div>
-              <p className="font-header">Symbol</p>
-              <input
-                className={inputClass}
-                {...register("symbol", {
-                  required: "Give your collection a symbol",
-                })}
-              />
-              <p className="text-red-600 text-sm">
-                <ErrorMessage errors={errors} name="symbol" />
-              </p>
             </div>
 
             <div>
@@ -225,19 +318,19 @@ const DeployContract = ({ metadata, setDeploymentStep }: any) => {
                 <p className="text-sm absolute right-3">%</p>
               </div>
             </div>
-          </div>
 
-          <div>
-            <p className="font-header">Description</p>
-            <textarea
-              className={`${inputClass} w-1/2`}
-              {...register("description", {
-                required: "Please enter a description.",
-              })}
+            <SaleDates
+              hovers={{
+                isHovering4,
+                isHovering5,
+                setIsHovering4,
+                setIsHovering5,
+              }}
+              saleStart={saleStart}
+              saleEnd={saleEnd}
+              setSaleStart={setSaleStart}
+              setSaleEnd={setSaleEnd}
             />
-            <p className="text-red-600 text-sm">
-              <ErrorMessage errors={errors} name="description" />
-            </p>
           </div>
 
           <button
