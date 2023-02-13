@@ -69,7 +69,7 @@ const PlayerCreateForm = ({ setMetadata, setDeploymentStep }: any) => {
   const hasAudioTracks = audioTracks.length > 0;
 
   return (
-    <div className="min-h-screen grid md:grid-cols-2 grid-cols-1">
+    <div className="flex-1 grid md:grid-cols-2 grid-cols-1">
       <div className="flex flex-wrap items-center sm:pl-10">
         <div className="space-y-8">
           <h1>Create Player</h1>

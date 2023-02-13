@@ -3,7 +3,7 @@ import DeployContract from "../DeployContract";
 
 const MintingForm = ({ metadata, setMetadata, setDeploymentStep }: any) => {
   return (
-    <div className="grid md:grid-cols-2 grid-cols-1">
+    <div className="flex-1 grid md:grid-cols-2 grid-cols-1">
       <div className="flex flex-wrap items-center">
         <div className="space-y-8 sm:pl-11">
           <h1>Create Player</h1>
