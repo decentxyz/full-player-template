@@ -7,15 +7,15 @@ import PlayerCreatePage from "../PlayerCreatePage";
 const Home: NextPage = () => {
   const [entered, setEntered] = useState(false);
 
-  return <>
-    <div className={`${styles.container} background`}>
+  return (
+    <div>
       {entered ? (
         <PlayerCreatePage />
       ) : (
         <LaunchPage onClick={() => setEntered(true)} />
       )}
     </div>
-  </>;
+  );
 };
 
 export default Home;
