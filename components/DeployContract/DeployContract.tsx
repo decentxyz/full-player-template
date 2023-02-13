@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { DecentSDK, edition } from "@decent.xyz/sdk";
@@ -51,6 +51,7 @@ const DeployContract = ({ metadata, setMetadata, setDeploymentStep }: any) => {
   const [saleStart, setSaleStart] = useState(0);
   const [saleEnd, setSaleEnd] = useState(0);
   const [size, setSize] = useState("open" as string);
+  const isOpenEdition = useMemo(() => size === ("open" as any), [size]);
 
   useEffect(() => {
     console.log("checking...");
@@ -98,9 +99,13 @@ const DeployContract = ({ metadata, setMetadata, setDeploymentStep }: any) => {
         const sdk = new DecentSDK(chain.id, signer);
         let nft;
 
+        const editionSize = isOpenEdition
+          ? 9999999999
+          : getValues("editionSize");
+
         setMetadata({
           ...metadata,
-          editionSize: getValues("editionSize"),
+          editionSize,
           tokenPrice: getValues("tokenPrice"),
           maxTokenPurchase: getValues("maxTokenPurchase"),
           saleStart,
@@ -138,7 +143,7 @@ const DeployContract = ({ metadata, setMetadata, setDeploymentStep }: any) => {
             getValues("collectionName"), // name
             getValues("symbol"), // symbol
             false, // hasAdjustableCap
-            getValues("editionSize"), // maxTokens
+            editionSize, // maxTokens
             ethers.utils.parseEther(getValues("tokenPrice")), // tokenPrice
             getValues("maxTokenPurchase") || 0, // maxTokensPurchase
             null, //presaleMerkleRoot
@@ -203,9 +208,37 @@ const DeployContract = ({ metadata, setMetadata, setDeploymentStep }: any) => {
             </div>
 
             <div>
+              <p className="font-header">Symbol</p>
+              <input
+                className={inputClass}
+                {...register("symbol", {
+                  required: "Give your collection a symbol",
+                })}
+              />
+              <p className="text-red-600 text-sm">
+                <ErrorMessage errors={errors} name="symbol" />
+              </p>
+            </div>
+
+            <div className="w-full">
+              <p className="font-header">Description</p>
+              <textarea
+                className={`${inputClass} w-1/2`}
+                {...register("description", {
+                  required: "Please enter a description.",
+                })}
+              />
+              <p className="text-red-600 text-sm">
+                <ErrorMessage errors={errors} name="description" />
+              </p>
+            </div>
+
+            <div>
               <div className="pb-2 flex items-center">
                 <label>Edition Size</label>
                 <InfoField
+                  isHovering={isHovering1}
+                  setIsHovering={setIsHovering1}
                   xDirection={"left"}
                   yDirection={"bottom"}
                   infoText={
@@ -228,6 +261,11 @@ const DeployContract = ({ metadata, setMetadata, setDeploymentStep }: any) => {
                 <input
                   disabled={size === ("open" as any)}
                   className={inputClass}
+                  value={
+                    (size === ("open" as any)
+                      ? "∞"
+                      : getValues("editionSize")) as string
+                  }
                   {...register("editionSize")}
                 />
 
@@ -252,19 +290,6 @@ const DeployContract = ({ metadata, setMetadata, setDeploymentStep }: any) => {
                 />
               </div>
               <input className={inputClass} {...register("maxTokenPurchase")} />
-            </div>
-
-            <div>
-              <p className="font-header">Symbol</p>
-              <input
-                className={inputClass}
-                {...register("symbol", {
-                  required: "Give your collection a symbol",
-                })}
-              />
-              <p className="text-red-600 text-sm">
-                <ErrorMessage errors={errors} name="symbol" />
-              </p>
             </div>
 
             <div>
@@ -313,19 +338,6 @@ const DeployContract = ({ metadata, setMetadata, setDeploymentStep }: any) => {
               setSaleStart={setSaleStart}
               setSaleEnd={setSaleEnd}
             />
-          </div>
-
-          <div>
-            <p className="font-header">Description</p>
-            <textarea
-              className={`${inputClass} w-1/2`}
-              {...register("description", {
-                required: "Please enter a description.",
-              })}
-            />
-            <p className="text-red-600 text-sm">
-              <ErrorMessage errors={errors} name="description" />
-            </p>
           </div>
 
           <button

@@ -14,7 +14,10 @@ const PlayerCreatePage: NextPage = () => {
   const { chain } = useNetwork();
 
   return (
-    <div>
+    <main
+      style={{ backgroundImage: "url('/images/bg.png')" }}
+      className="w-screen min-h-screen bg-cover"
+    >
       <SeoHead />
       {deploymentStep > 0 ? (
         <TxScreen
@@ -39,9 +42,8 @@ const PlayerCreatePage: NextPage = () => {
           )}
         </>
       )}
-
       <Footer />
-    </div>
+    </main>
   );
 };
 
