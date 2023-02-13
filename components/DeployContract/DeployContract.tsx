@@ -56,9 +56,7 @@ const DeployContract = ({ metadata, setMetadata, setDeploymentStep }: any) => {
   const isOpenEdition = useMemo(() => size === ("open" as any), [size]);
 
   useEffect(() => {
-    console.log("checking...");
     if (!metadata?.name) return;
-    console.log("metadata", metadata);
     setValue("collectionName", metadata.name);
     setValue("symbol", metadata.symbol || metadata.artist);
     setValue("editionSize", metadata.editionSize || 11);
@@ -129,15 +127,11 @@ const DeployContract = ({ metadata, setMetadata, setDeploymentStep }: any) => {
           ? dateToEpochTime(new Date(saleStart))
           : 0;
 
-        console.log("saleEnd", saleEnd);
-
         const formattedEndDate =
           saleEnd > 0
             ? dateToEpochTime(new Date(saleEnd))
             : ethers.BigNumber.from(UINT64_MINUS_ONE);
 
-        console.log("formattedStartDate", formattedStartDate);
-        console.log("formattedEndDate", formattedEndDate);
         try {
           setDeploymentStep(2);
           nft = await edition.deploy(
@@ -186,7 +180,6 @@ const DeployContract = ({ metadata, setMetadata, setDeploymentStep }: any) => {
 
   function handleChange(e: any) {
     let value = e.target.value;
-    console.log("value", value);
     if (value !== "open") {
       setValue("editionSize", 11);
     }
