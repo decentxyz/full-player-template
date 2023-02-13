@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import styles from "../../styles/Home.module.css";
 import SeoHead from "../SeoHead";
 import PlayerCreateForm from "../PlayerCreateForm";
 import TxScreen from "../TxScreen";
@@ -16,7 +15,7 @@ const PlayerCreatePage: NextPage = () => {
   return (
     <main
       style={{ backgroundImage: "url('/images/bg.png')" }}
-      className="w-screen min-h-screen bg-cover"
+      className="w-full min-h-screen bg-cover bg-right-bottom px-8 flex flex-col"
     >
       <SeoHead />
       {deploymentStep > 0 ? (
