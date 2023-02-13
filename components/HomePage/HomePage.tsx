@@ -1,18 +1,19 @@
 import type { NextPage } from "next";
-import styles from "../../styles/Home.module.css";
-import { useState } from "react";
 import LaunchPage from "../LaunchPage";
 import PlayerCreatePage from "../PlayerCreatePage";
+import { useRouter } from "next/router";
 
-const Home: NextPage = () => {
-  const [entered, setEntered] = useState(false);
+const Home: NextPage = (): JSX.Element => {
+  const router = useRouter();
+  const { create } = router.query;
+  const entered = create !== undefined;
 
   return <>
-    <div className={`${styles.container} background`}>
+    <div>
       {entered ? (
         <PlayerCreatePage />
       ) : (
-        <LaunchPage onClick={() => setEntered(true)} />
+        <LaunchPage onClick={() => router.push(router.asPath + "?create")} />
       )}
     </div>
   </>;

@@ -1,13 +1,10 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import Image from "next/image";
-import Link from "next/link";
-import styles from "../../styles/Home.module.css";
 import DeployContract from "../DeployContract";
 
 const MintingForm = ({ metadata, setDeploymentStep }: any) => {
   return (
-    <main style={{ backgroundImage: "url('/images/bg.png')"}} className="w-screen min-h-screen bg-cover">
-      <div className="min-h-screen grid md:grid-cols-2 grid-cols-1">
+    <main style={{ backgroundImage: "url('/images/bg.png')"}} className="w-full bg-cover bg-right-bottom flex-1 px-8 flex">
+      <div className="w-full grid md:grid-cols-2 grid-cols-1 my-auto">
         <div className="flex flex-wrap items-center">
           <div className="space-y-8">
             <h1>Create Player</h1>
